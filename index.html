@@ -455,13 +455,18 @@
 
             // Calculate discount
             let discountPercent = 0;
-            if (subtotal >= 20000000) {
+            if (subtotal >= 40000000) {
+                discountPercent = 30;
+            } else if (subtotal >= 30000000) {
+                discountPercent = 25;
+            } else if (subtotal >= 20000000) {
                 discountPercent = 20;
-            } else if (subtotal >= 10000000) {
+            } else if (subtotal >= 15000000) {
                 discountPercent = 10;
-            } else if (subtotal > 0) {
+            } else if (subtotal >= 10000000) {
                 discountPercent = 5;
-            }
+            } else discountPercent = 5;
+            
             const discountAmount = subtotal * (discountPercent / 100);
             const total = subtotal - discountAmount;
 
@@ -532,14 +537,19 @@
             }
 
             // Calculate discount
-            let discountPercent = 0;
-            if (subtotal >= 20000000) {
+           let discountPercent = 0;
+            if (subtotal >= 40000000) {
+                discountPercent = 30;
+            } else if (subtotal >= 30000000) {
+                discountPercent = 25;
+            } else if (subtotal >= 20000000) {
                 discountPercent = 20;
-            } else if (subtotal >= 10000000) {
+            } else if (subtotal >= 15000000) {
                 discountPercent = 10;
-            } else if (subtotal > 0) {
+            } else if (subtotal >= 10000000) {
                 discountPercent = 5;
-            }
+            } else discountPercent = 5;
+                
             const discountAmount = subtotal * (discountPercent / 100);
             const total = subtotal - discountAmount;
 
