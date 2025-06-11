@@ -108,7 +108,9 @@
     <img src="Perlapots_Logo.jpg" alt="لوگوی شرکت" class="logo">
     <h1>سفارش محصول perlapots</h1>
 
-    <h2>لطفا محصولات مورد نظرتان را بر اساس نوع و رنگ هر محصول انتخاب کنید. در نهایت با ثبت اطلاعاتتان سفارشتان بر روی واتس آپ ارسال می‌شود</h2>
+    <h2>لطفا محصولات مورد نظرتان را بر اساس نوع و رنگ هر محصول انتخاب کنید. در نهایت با ثبت اطلاعاتتان سفارشتان بر روی واتس آپ به شماره ۰۹۱۹۴۷۶۲۲۰۶ ارسال می‌شود</h2>
+    <h2>در صورتی که برای انتخاب محصولات به راهنمایی و کمک ما نیاز دارید، با ما تماس بگیرید</h2>
+        
     <form id="orderForm" onsubmit="submitOrder(event)">
         <table id="productTable">
             <tr>
@@ -359,6 +361,7 @@
         <p id="discount" style="font-weight: bold;">تخفیف: ۰٪ (۰ تومان)</p>
         <p id="total" style="font-weight: bold;"><strong>مجموع نهایی: ۰ تومان</strong></p>
 
+            
         <h2>محصولات سفارش‌ داده شده</h2>
         <table id="orderedProducts">
             <tr>
@@ -411,6 +414,9 @@
 
         // Colors
         const colors = ['Off white', 'Midnight blue', 'Evergreen', 'Misty blue', 'Golden amber', 'Silky beige'];
+
+        // Google Apps Script Web App URL (replace with your URL)
+        const scriptUrl = 'https://script.google.com/macros/s/AKfycbzwkxXomRanNPBVngfdeuh4LAh2pX-LEFvZj4pKK16H6ZXGMhmNfbwugzLEzGAMsmlZzQ/exec';
 
         // Add event listeners to quantity inputs
         document.querySelectorAll('.quantity').forEach(input => {
