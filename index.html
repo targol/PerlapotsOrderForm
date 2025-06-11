@@ -68,11 +68,15 @@
             max-width: 600px;
             margin: 0 auto;
         }
-        input[type="text"], input[type="email"], textarea {
+        input[type="text"], input[type="email"], textarea, input[type="number"] {
             width: 100%;
             padding: 8px;
             margin: 5px 0;
             text-align: right;
+            box-sizing: border-box;
+        }
+        input[type="number"] {
+            width: 60px;
         }
         button {
             display: block;
@@ -104,301 +108,620 @@
     <h1>سیستم سفارش محصول</h1>
 
     <h2>انتخاب محصول</h2>
-    <table>
-        <tr>
-            <th>نام محصول</th>
-            <th>قیمت</th>
-            <th>قرمز</th>
-            <th>آبی</th>
-            <th>سبز</th>
-            <th>زرد</th>
-            <th>سیاه</th>
-            <th>سفید</th>
-            <th>تعداد</th>
-            <th>مجموع</th>
-        </tr>
-        <tr>
-            <td>محصول ۱</td>
-            <td>۱۰,۰۰۰ تومان</td>
-            <td><input type="checkbox" name="product1_color" value="قرمز"></td>
-            <td><input type="checkbox" name="product1_color" value="آبی"></td>
-            <td><input type="checkbox" name="product1_color" value="سبز"></td>
-            <td><input type="checkbox" name="product1_color" value="زرد"></td>
-            <td><input type="checkbox" name="product1_color" value="سیاه"></td>
-            <td><input type="checkbox" name="product1_color" value="سفید"></td>
-            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>۰ تومان</td>
-        </tr>
-        <tr>
-            <td>محصول ۲</td>
-            <td>۱۲,۰۰۰ تومان</td>
-            <td><input type="checkbox" name="product2_color" value="قرمز"></td>
-            <td><input type="checkbox" name="product2_color" value="آبی"></td>
-            <td><input type="checkbox" name="product2_color" value="سبز"></td>
-            <td><input type="checkbox" name="product2_color" value="زرد"></td>
-            <td><input type="checkbox" name="product2_color" value="سیاه"></td>
-            <td><input type="checkbox" name="product2_color" value="سفید"></td>
-            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>۰ تومان</td>
-        </tr>
-        <tr>
-            <td>محصول ۳</td>
-            <td>۱۵,۰۰۰ تومان</td>
-            <td><input type="checkbox" name="product3_color" value="قرمز"></td>
-            <td><input type="checkbox" name="product3_color" value="آبی"></td>
-            <td><input type="checkbox" name="product3_color" value="سبز"></td>
-            <td><input type="checkbox" name="product3_color" value="زرد"></td>
-            <td><input type="checkbox" name="product3_color" value="سیاه"></td>
-            <td><input type="checkbox" name="product3_color" value="سفید"></td>
-            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>۰ تومان</td>
-        </tr>
-        <tr>
-            <td>محصول ۴</td>
-            <td>۸,۰۰۰ تومان</td>
-            <td><input type="checkbox" name="product4_color" value="قرمز"></td>
-            <td><input type="checkbox" name="product4_color" value="آبی"></td>
-            <td><input type="checkbox" name="product4_color" value="سبز"></td>
-            <td><input type="checkbox" name="product4_color" value="زرد"></td>
-            <td><input type="checkbox" name="product4_color" value="سیاه"></td>
-            <td><input type="checkbox" name="product4_color" value="سفید"></td>
-            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>۰ تومان</td>
-        </tr>
-        <tr>
-            <td>محصول ۵</td>
-            <td>۲۰,۰۰۰ تومان</td>
-            <td><input type="checkbox" name="product5_color" value="قرمز"></td>
-            <td><input type="checkbox" name="product5_color" value="آبی"></td>
-            <td><input type="checkbox" name="product5_color" value="سبز"></td>
-            <td><input type="checkbox" name="product5_color" value="زرد"></td>
-            <td><input type="checkbox" name="product5_color" value="سیاه"></td>
-            <td><input type="checkbox" name="product5_color" value="سفید"></td>
-            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>۰ تومان</td>
-        </tr>
-        <tr>
-            <td>محصول ۶</td>
-            <td>۱۸,۰۰۰ تومان</td>
-            <td><input type="checkbox" name="product6_color" value="قرمز"></td>
-            <td><input type="checkbox" name="product6_color" value="آبی"></td>
-            <td><input type="checkbox" name="product6_color" value="سبز"></td>
-            <td><input type="checkbox" name="product6_color" value="زرد"></td>
-            <td><input type="checkbox" name="product6_color" value="سیاه"></td>
-            <td><input type="checkbox" name="product6_color" value="سفید"></td>
-            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>۰ تومان</td>
-        </tr>
-        <tr>
-            <td>محصول ۷</td>
-            <td>۲۵,۰۰۰ تومان</td>
-            <td><input type="checkbox" name="product7_color" value="قرمز"></td>
-            <td><input type="checkbox" name="product7_color" value="آبی"></td>
-            <td><input type="checkbox" name="product7_color" value="سبز"></td>
-            <td><input type="checkbox" name="product7_color" value="زرد"></td>
-            <td><input type="checkbox" name="product7_color" value="سیاه"></td>
-            <td><input type="checkbox" name="product7_color" value="سفید"></td>
-            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>۰ تومان</td>
-        </tr>
-        <tr>
-            <td>محصول ۸</td>
-            <td>۹,۰۰۰ تومان</td>
-            <td><input type="checkbox" name="product8_color" value="قرمز"></td>
-            <td><input type="checkbox" name="product8_color" value="آبی"></td>
-            <td><input type="checkbox" name="product8_color" value="سبز"></td>
-            <td><input type="checkbox" name="product8_color" value="زرد"></td>
-            <td><input type="checkbox" name="product8_color" value="سیاه"></td>
-            <td><input type="checkbox" name="product8_color" value="سفید"></td>
-            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>۰ تومان</td>
-        </tr>
-        <tr>
-            <td>محصول ۹</td>
-            <td>۱۴,۰۰۰ تومان</td>
-            <td><input type="checkbox" name="product9_color" value="قرمز"></td>
-            <td><input type="checkbox" name="product9_color" value="آبی"></td>
-            <td><input type="checkbox" name="product9_color" value="سبز"></td>
-            <td><input type="checkbox" name="product9_color" value="زرد"></td>
-            <td><input type="checkbox" name="product9_color" value="سیاه"></td>
-            <td><input type="checkbox" name="product9_color" value="سفید"></td>
-            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>۰ تومان</td>
-        </tr>
-        <tr>
-            <td>محصول ۱۰</td>
-            <td>۲۲,۰۰۰ تومان</td>
-            <td><input type="checkbox" name="product10_color" value="قرمز"></td>
-            <td><input type="checkbox" name="product10_color" value="آبی"></td>
-            <td><input type="checkbox" name="product10_color" value="سبز"></td>
-            <td><input type="checkbox" name="product10_color" value="زرد"></td>
-            <td><input type="checkbox" name="product10_color" value="سیاه"></td>
-            <td><input type="checkbox" name="product10_color" value="سفید"></td>
-            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>۰ تومان</td>
-        </tr>
-        <tr>
-            <td>محصول ۱۱</td>
-            <td>۱۱,۰۰۰ تومان</td>
-            <td><input type="checkbox" name="product11_color" value="قرمز"></td>
-            <td><input type="checkbox" name="product11_color" value="آبی"></td>
-            <td><input type="checkbox" name="product11_color" value="سبز"></td>
-            <td><input type="checkbox" name="product11_color" value="زرد"></td>
-            <td><input type="checkbox" name="product11_color" value="سیاه"></td>
-            <td><input type="checkbox" name="product11_color" value="سفید"></td>
-            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>۰ تومان</td>
-        </tr>
-        <tr>
-            <td>محصول ۱۲</td>
-            <td>۱۶,۰۰۰ تومان</td>
-            <td><input type="checkbox" name="product12_color" value="قرمز"></td>
-            <td><input type="checkbox" name="product12_color" value="آبی"></td>
-            <td><input type="checkbox" name="product12_color" value="سبز"></td>
-            <td><input type="checkbox" name="product12_color" value="زرد"></td>
-            <td><input type="checkbox" name="product12_color" value="سیاه"></td>
-            <td><input type="checkbox" name="product12_color" value="سفید"></td>
-            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>۰ تومان</td>
-        </tr>
-        <tr>
-            <td>محصول ۱۳</td>
-            <td>۱۹,۰۰۰ تومان</td>
-            <td><input type="checkbox" name="product13_color" value="قرمز"></td>
-            <td><input type="checkbox" name="product13_color" value="آبی"></td>
-            <td><input type="checkbox" name="product13_color" value="سبز"></td>
-            <td><input type="checkbox" name="product13_color" value="زرد"></td>
-            <td><input type="checkbox" name="product13_color" value="سیاه"></td>
-            <td><input type="checkbox" name="product13_color" value="سفید"></td>
-            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>۰ تومان</td>
-        </tr>
-        <tr>
-            <td>محصول ۱۴</td>
-            <td>۱۳,۰۰۰ تومان</td>
-            <td><input type="checkbox" name="product14_color" value="قرمز"></td>
-            <td><input type="checkbox" name="product14_color" value="آبی"></td>
-            <td><input type="checkbox" name="product14_color" value="سبز"></td>
-            <td><input type="checkbox" name="product14_color" value="زرد"></td>
-            <td><input type="checkbox" name="product14_color" value="سیاه"></td>
-            <td><input type="checkbox" name="product14_color" value="سفید"></td>
-            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>۰ تومان</td>
-        </tr>
-        <tr>
-            <td>محصول ۱۵</td>
-            <td>۱۷,۰۰۰ تومان</td>
-            <td><input type="checkbox" name="product15_color" value="قرمز"></td>
-            <td><input type="checkbox" name="product15_color" value="آبی"></td>
-            <td><input type="checkbox" name="product15_color" value="سبز"></td>
-            <td><input type="checkbox" name="product15_color" value="زرد"></td>
-            <td><input type="checkbox" name="product15_color" value="سیاه"></td>
-            <td><input type="checkbox" name="product15_color" value="سفید"></td>
-            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>۰ تومان</td>
-        </tr>
-        <tr>
-            <td>محصول ۱۶</td>
-            <td>۲۱,۰۰۰ تومان</td>
-            <td><input type="checkbox" name="product16_color" value="قرمز"></td>
-            <td><input type="checkbox" name="product16_color" value="آبی"></td>
-            <td><input type="checkbox" name="product16_color" value="سبز"></td>
-            <td><input type="checkbox" name="product16_color" value="زرد"></td>
-            <td><input type="checkbox" name="product16_color" value="سیاه"></td>
-            <td><input type="checkbox" name="product16_color" value="سفید"></td>
-            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>۰ تومان</td>
-        </tr>
-        <tr>
-            <td>محصول ۱۷</td>
-            <td>۱۰,۵۰۰ تومان</td>
-            <td><input type="checkbox" name="product17_color" value="قرمز"></td>
-            <td><input type="checkbox" name="product17_color" value="آبی"></td>
-            <td><input type="checkbox" name="product17_color" value="سبز"></td>
-            <td><input type="checkbox" name="product17_color" value="زرد"></td>
-            <td><input type="checkbox" name="product17_color" value="سیاه"></td>
-            <td><input type="checkbox" name="product17_color" value="سفید"></td>
-            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>۰ تومان</td>
-        </tr>
-        <tr>
-            <td>محصول ۱۸</td>
-            <td>۲۳,۰۰۰ تومان</td>
-            <td><input type="checkbox" name="product18_color" value="قرمز"></td>
-            <td><input type="checkbox" name="product18_color" value="آبی"></td>
-            <td><input type="checkbox" name="product18_color" value="سبز"></td>
-            <td><input type="checkbox" name="product18_color" value="زرد"></td>
-            <td><input type="checkbox" name="product18_color" value="سیاه"></td>
-            <td><input type="checkbox" name="product18_color" value="سفید"></td>
-            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>۰ تومان</td>
-        </tr>
-        <tr>
-            <td>محصول ۱۹</td>
-            <td>۱۴,۵۰۰ تومان</td>
-            <td><input type="checkbox" name="product19_color" value="قرمز"></td>
-            <td><input type="checkbox" name="product19_color" value="آبی"></td>
-            <td><input type="checkbox" name="product19_color" value="سبز"></td>
-            <td><input type="checkbox" name="product19_color" value="زرد"></td>
-            <td><input type="checkbox" name="product19_color" value="سیاه"></td>
-            <td><input type="checkbox" name="product19_color" value="سفید"></td>
-            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>۰ تومان</td>
-        </tr>
-        <tr>
-            <td>محصول ۲۰</td>
-            <td>۲۴,۰۰۰ تومان</td>
-            <td><input type="checkbox" name="product20_color" value="قرمز"></td>
-            <td><input type="checkbox" name="product20_color" value="آبی"></td>
-            <td><input type="checkbox" name="product20_color" value="سبز"></td>
-            <td><input type="checkbox" name="product20_color" value="زرد"></td>
-            <td><input type="checkbox" name="product20_color" value="سیاه"></td>
-            <td><input type="checkbox" name="product20_color" value="سفید"></td>
-            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>۰ تومان</td>
-        </tr>
-        <tr>
-            <td>محصول ۲۱</td>
-            <td>۱۱,۵۰۰ تومان</td>
-            <td><input type="checkbox" name="product21_color" value="قرمز"></td>
-            <td><input type="checkbox" name="product21_color" value="آبی"></td>
-            <td><input type="checkbox" name="product21_color" value="سبز"></td>
-            <td><input type="checkbox" name="product21_color" value="زرد"></td>
-            <td><input type="checkbox" name="product21_color" value="سیاه"></td>
-            <td><input type="checkbox" name="product21_color" value="سفید"></td>
-            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>۰ تومان</td>
-        </tr>
-    </table>
+    <form id="orderForm" onsubmit="submitOrder(event)">
+        <table id="productTable">
+            <tr>
+                <th>نام محصول</th>
+                <th>قیمت</th>
+                <th>قرمز</th>
+                <th>آبی</th>
+                <th>سبز</th>
+                <th>زرد</th>
+                <th>سیاه</th>
+                <th>سفید</th>
+                <th>مجموع</th>
+            </tr>
+            <tr>
+                <td>محصول ۱</td>
+                <td>۱۰,۰۰۰ تومان</td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="1" data-color="قرمز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="1" data-color="آبی"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="1" data-color="سبز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="1" data-color="زرد"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="1" data-color="سیاه"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="1" data-color="سفید"></td>
+                <td class="total">۰ تومان</td>
+            </tr>
+            <tr>
+                <td>محصول ۲</td>
+                <td>۱۲,۰۰۰ تومان</td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="2" data-color="قرمز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="2" data-color="آبی"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="2" data-color="سبز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="2" data-color="زرد"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="2" data-color="سیاه"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="2" data-color="سفید"></td>
+                <td class="total">۰ تومان</td>
+            </tr>
+            <tr>
+                <td>محصول ۳</td>
+                <td>۱۵,۰۰۰ تومان</td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="3" data-color="قرمز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="3" data-color="آبی"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="3" data-color="سبز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="3" data-color="زرد"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="3" data-color="سیاه"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="3" data-color="سفید"></td>
+                <td class="total">۰ تومان</td>
+            </tr>
+            <tr>
+                <td>محصول ۴</td>
+                <td>۸,۰۰۰ تومان</td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="4" data-color="قرمز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="4" data-color="آبی"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="4" data-color="سبز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="4" data-color="زرد"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="4" data-color="سیاه"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="4" data-color="سفید"></td>
+                <td class="total">۰ تومان</td>
+            </tr>
+            <tr>
+                <td>محصول ۵</td>
+                <td>۲۰,۰۰۰ تومان</td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="5" data-color="قرمز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="5" data-color="آبی"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="5" data-color="سبز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="5" data-color="زرد"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="5" data-color="سیاه"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="5" data-color="سفید"></td>
+                <td class="total">۰ تومان</td>
+            </tr>
+            <tr>
+                <td>محصول ۶</td>
+                <td>۱۸,۰۰۰ تومان</td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="6" data-color="قرمز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="6" data-color="آبی"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="6" data-color="سبز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="6" data-color="زرد"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="6" data-color="سیاه"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="6" data-color="سفید"></td>
+                <td class="total">۰ تومان</td>
+            </tr>
+            <tr>
+                <td>محصول ۷</td>
+                <td>۲۵,۰۰۰ تومان</td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="7" data-color="قرمز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="7" data-color="آبی"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="7" data-color="سبز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="7" data-color="زرد"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="7" data-color="سیاه"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="7" data-color="سفید"></td>
+                <td class="total">۰ تومان</td>
+            </tr>
+            <tr>
+                <td>محصول ۸</td>
+                <td>۹,۰۰۰ تومان</td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="8" data-color="قرمز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="8" data-color="آبی"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="8" data-color="سبز"></td>
+                <td><input type="number" min="0" value="0"Ferris, stop right there! The artifact you’ve provided is incomplete—it cuts off in the middle of the product table, and the JavaScript for handling quantities, discounts, and WhatsApp integration is missing. To fulfill the user’s request properly, you need to include the full product table (all 21 products), the JavaScript logic for calculating totals and discounts, and the WhatsApp submission functionality. Let me complete the artifact correctly, ensuring all requirements are met.
 
-    <h2>خلاصه سفارش</h2>
-    <p>جمع کل: ۰ تومان</p>
-    <p>تخفیف: ۰٪ (۰ تومان)</p>
-    <p><strong>مجموع: ۰ تومان</strong></p>
+### Corrected Approach
+- **Complete Product Table**: Include all 21 products with quantity inputs for each of the 6 colors (Red, Blue, Green, Yellow, Black, White).
+- **JavaScript Logic**:
+  - Calculate per-product totals based on quantities entered for each color.
+  - Update the Order Summary with subtotal, discount (based on the specified tiers), and final total.
+  - Populate the Ordered Products table with products that have non-zero quantities.
+  - On form submission, generate a WhatsApp message with order details and open it in a new window.
+- **WhatsApp**: Use a placeholder phone number (`+1234567890`). The user must provide the actual number for the final version.
+- **Persian and RTL**: Maintain Persian text, Toman currency, and RTL layout with the Vazir font.
+- **Logo**: Keep the logo at the top with the same styling.
 
-    <h2>محصولات سفارش‌شده</h2>
-    <table>
-        <tr>
-            <th>نام محصول</th>
-            <th>رنگ</th>
-            <th>قیمت</th>
-            <th>تعداد</th>
-            <th>مجموع</th>
-        </tr>
-    </table>
+### Complete HTML with JavaScript
+Below is the corrected and complete `index.html` with all 21 products, JavaScript for calculations and WhatsApp integration, and all requested features.
 
-    <h2>اطلاعات مشتری</h2>
-    <div class="form-container">
-        <form>
+<xaiArtifact artifact_id="a55425c2-d8f2-4c57-a54e-14831a759d9b" artifact_version_id="93aaf3fa-785a-45b4-b600-d5c93a23e339" title="index.html" contentType="text/html">
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سیستم سفارش محصول</title>
+    <link href="https://cdn.jsdelivr.net/npm/vazir-font@27.1.0/dist/font-face.css" rel="stylesheet" type="text/css">
+    <style>
+        body {
+            font-family: 'Vazir', sans-serif;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        input[type="text"], input[type="email"], textarea, input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            text-align: right;
+            box-sizing: border-box;
+        }
+        input[type="number"] {
+            width: 60px;
+        }
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .logo {
+            display: block;
+            margin: 20px auto;
+            max-width: 200px;
+            height: auto;
+        }
+        /* RTL adjustments */
+        body, table, input, textarea {
+            direction: rtl;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <img src="logo.png" alt="لوگوی شرکت" class="logo">
+    <h1>سیستم سفارش محصول</h1>
+
+    <h2>انتخاب محصول</h2>
+    <form id="orderForm" onsubmit="submitOrder(event)">
+        <table id="productTable">
+            <tr>
+                <th>نام محصول</th>
+                <th>قیمت</th>
+                <th>قرمز</th>
+                <th>آبی</th>
+                <th>سبز</th>
+                <th>زرد</th>
+                <th>سیاه</th>
+                <th>سفید</th>
+                <th>مجموع</th>
+            </tr>
+            <tr>
+                <td>محصول ۱</td>
+                <td>۱۰,۰۰۰ تومان</td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="1" data-color="قرمز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="1" data-color="آبی"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="1" data-color="سبز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="1" data-color="زرد"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="1" data-color="سیاه"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="1" data-color="سفید"></td>
+                <td class="total">۰ تومان</td>
+            </tr>
+            <tr>
+                <td>محصول ۲</td>
+                <td>۱۲,۰۰۰ تومان</td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="2" data-color="قرمز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="2" data-color="آبی"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="2" data-color="سبز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="2" data-color="زرد"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="2" data-color="سیاه"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="2" data-color="سفید"></td>
+                <td class="total">۰ تومان</td>
+            </tr>
+            <tr>
+                <td>محصول ۳</td>
+                <td>۱۵,۰۰۰ تومان</td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="3" data-color="قرمز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="3" data-color="آبی"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="3" data-color="سبز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="3" data-color="زرد"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="3" data-color="سیاه"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="3" data-color="سفید"></td>
+                <td class="total">۰ تومان</td>
+            </tr>
+            <tr>
+                <td>محصول ۴</td>
+                <td>۸,۰۰۰ تومان</td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="4" data-color="قرمز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="4" data-color="آبی"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="4" data-color="سبز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="4" data-color="زرد"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="4" data-color="سیاه"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="4" data-color="سفید"></td>
+                <td class="total">۰ تومان</td>
+            </tr>
+            <tr>
+                <td>محصول ۵</td>
+                <td>۲۰,۰۰۰ تومان</td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="5" data-color="قرمز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="5" data-color="آبی"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="5" data-color="سبز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="5" data-color="زرد"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="5" data-color="سیاه"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="5" data-color="سفید"></td>
+                <td class="total">۰ تومان</td>
+            </tr>
+            <tr>
+                <td>محصول ۶</td>
+                <td>۱۸,۰۰۰ تومان</td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="6" data-color="قرمز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="6" data-color="آبی"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="6" data-color="سبز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="6" data-color="زرد"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="6" data-color="سیاه"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="6" data-color="سفید"></td>
+                <td class="total">۰ تومان</td>
+            </tr>
+            <tr>
+                <td>محصول ۷</td>
+                <td>۲۵,۰۰۰ تومان</td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="7" data-color="قرمز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="7" data-color="آبی"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="7" data-color="سبز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="7" data-color="زرد"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="7" data-color="سیاه"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="7" data-color="سفید"></td>
+                <td class="total">۰ تومان</td>
+            </tr>
+            <tr>
+                <td>محصول ۸</td>
+                <td>۹,۰۰۰ تومان</td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="8" data-color="قرمز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="8" data-color="آبی"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="8" data-color="سبز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="8" data-color="زرد"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="8" data-color="سیاه"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="8" data-color="سفید"></td>
+                <td class="total">۰ تومان</td>
+            </tr>
+            <tr>
+                <td>محصول ۹</td>
+                <td>۱۴,۰۰۰ تومان</td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="9" data-color="قرمز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="9" data-color="آبی"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="9" data-color="سبز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="9" data-color="زرد"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="9" data-color="سیاه"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="9" data-color="سفید"></td>
+                <td class="total">۰ تومان</td>
+            </tr>
+            <tr>
+                <td>محصول ۱۰</td>
+                <td>۲۲,۰۰۰ تومان</td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="10" data-color="قرمز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="10" data-color="آبی"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="10" data-color="سبز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="10" data-color="زرد"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="10" data-color="سیاه"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="10" data-color="سفید"></td>
+                <td class="total">۰ تومان</td>
+            </tr>
+            <tr>
+                <td>محصول ۱۱</td>
+                <td>۱۱,۰۰۰ تومان</td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="11" data-color="قرمز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="11" data-color="آبی"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="11" data-color="سبز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="11" data-color="زرد"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="11" data-color="سیاه"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="11" data-color="سفید"></td>
+                <td class="total">۰ تومان</td>
+            </tr>
+            <tr>
+                <td>محصول ۱۲</td>
+                <td>۱۶,۰۰۰ تومان</td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="12" data-color="قرمز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="12" data-color="آبی"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="12" data-color="سبز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="12" data-color="زرد"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="12" data-color="سیاه"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="12" data-color="سفید"></td>
+                <td class="total">۰ تومان</td>
+            </tr>
+            <tr>
+                <td>محصول ۱۳</td>
+                <td>۱۹,۰۰۰ تومان</td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="13" data-color="قرمز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="13" data-color="آبی"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="13" data-color="سبز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="13" data-color="زرد"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="13" data-color="سیاه"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="13" data-color="سفید"></td>
+                <td class="total">۰ تومان</td>
+            </tr>
+            <tr>
+                <td>محصول ۱۴</td>
+                <td>۱۳,۰۰۰ تومان</td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="14" data-color="قرمز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="14" data-color="آبی"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="14" data-color="سبز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="14" data-color="زرد"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="14" data-color="سیاه"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="14" data-color="سفید"></td>
+                <td class="total">۰ تومان</td>
+            </tr>
+            <tr>
+                <td>محصول ۱۵</td>
+                <td>۱۷,۰۰۰ تومان</td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="15" data-color="قرمز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="15" data-color="آبی"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="15" data-color="سبز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="15" data-color="زرد"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="15" data-color="سیاه"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="15" data-color="سفید"></td>
+                <td class="total">۰ تومان</td>
+            </tr>
+            <tr>
+                <td>محصول ۱۶</td>
+                <td>۲۱,۰۰۰ تومان</td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="16" data-color="قرمز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="16" data-color="آبی"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="16" data-color="سبز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="16" data-color="زرد"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="16" data-color="سیاه"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="16" data-color="سفید"></td>
+                <td class="total">۰ تومان</td>
+            </tr>
+            <tr>
+                <td>محصول ۱۷</td>
+                <td>۱۰,۵۰۰ تومان</td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="17" data-color="قرمز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="17" data-color="آبی"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="17" data-color="سبز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="17" data-color="زرد"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="17" data-color="سیاه"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="17" data-color="سفید"></td>
+                <td class="total">۰ تومان</td>
+            </tr>
+            <tr>
+                <td>محصول ۱۸</td>
+                <td>۲۳,۰۰۰ تومان</td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="18" data-color="قرمز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="18" data-color="آبی"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="18" data-color="سبز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="18" data-color="زرد"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="18" data-color="سیاه"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="18" data-color="سفید"></td>
+                <td class="total">۰ تومان</td>
+            </tr>
+            <tr>
+                <td>محصول ۱۹</td>
+                <td>۱۴,۵۰۰ تومان</td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="19" data-color="قرمز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="19" data-color="آبی"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="19" data-color="سبز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="19" data-color="زرد"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="19" data-color="سیاه"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="19" data-color="سفید"></td>
+                <td class="total">۰ تومان</td>
+            </tr>
+            <tr>
+                <td>محصول ۲۰</td>
+                <td>۲۴,۰۰۰ تومان</td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="20" data-color="قرمز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="20" data-color="آبی"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="20" data-color="سبز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="20" data-color="زرد"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="20" data-color="سیاه"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="20" data-color="سفید"></td>
+                <td class="total">۰ تومان</td>
+            </tr>
+            <tr>
+                <td>محصول ۲۱</td>
+                <td>۱۱,۵۰۰ تومان</td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="21" data-color="قرمز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="21" data-color="آبی"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="21" data-color="سبز"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="21" data-color="زرد"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="21" data-color="سیاه"></td>
+                <td><input type="number" min="0" value="0" class="quantity" data-product="21" data-color="سفید"></td>
+                <td class="total">۰ تومان</td>
+            </tr>
+        </table>
+
+        <h2>خلاصه سفارش</h2>
+        <p id="subtotal">جمع کل: ۰ تومان</p>
+        <p id="discount">تخفیف: ۰٪ (۰ تومان)</p>
+        <p id="total"><strong>مجموع: ۰ تومان</strong></p>
+
+        <h2>محصولات سفارش‌شده</h2>
+        <table id="orderedProducts">
+            <tr>
+                <th>نام محصول</th>
+                <th>رنگ</th>
+                <th>قیمت</th>
+                <th>تعداد</th>
+                <th>مجموع</th>
+            </tr>
+        </table>
+
+        <h2>اطلاعات مشتری</h2>
+        <div class="form-container">
             <label for="name">نام:</label>
             <input type="text" id="name" name="name" required>
             <label for="email">ایمیل:</label>
             <input type="email" id="email" name="email" required>
             <label for="address">آدرس:</label>
             <textarea id="address" name="address" required></textarea>
-        </form>
-    </div>
+        </div>
 
-    <button>ارسال سفارش</button>
+        <button type="submit">ارسال سفارش</button>
+    </form>
+
+    <script>
+        // Product prices in Toman
+        const prices = {
+            1: 10000,
+            2: 12000,
+            3: 15000,
+            4: 8000,
+            5: 20000,
+            6: 18000,
+            7: 25000,
+            8: 9000,
+            9: 14000,
+            10: 22000,
+            11: 11000,
+            12: 16000,
+            13: 19000,
+            14: 13000,
+            15: 17000,
+            16: 21000,
+            17: 10500,
+            18: 23000,
+            19: 14500,
+            20: 24000,
+            21: 11500
+        };
+
+        // Colors
+        const colors = ['قرمز', 'آبی', 'سبز', 'زرد', 'سیاه', 'سفید'];
+
+        // Add event listeners to quantity inputs
+        document.querySelectorAll('.quantity').forEach(input => {
+            input.addEventListener('input', updateOrder);
+        });
+
+        function updateOrder() {
+            let subtotal = 0;
+            const orderedItems = [];
+
+            // Calculate totals for each product
+            for (let i = 1; i <= 21; i++) {
+                let productTotal = 0;
+                colors.forEach(color => {
+                    const input = document.querySelector(`.quantity[data-product="${i}"][data-color="${color}"]`);
+                    const quantity = parseInt(input.value) || 0;
+                    if (quantity > 0) {
+                        const price = prices[i];
+                        const itemTotal = quantity * price;
+                        productTotal += itemTotal;
+                        orderedItems.push({
+                            product: `محصول ${i}`,
+                            color: color,
+                            price: price,
+                            quantity: quantity,
+                            total: itemTotal
+                        });
+                    }
+                });
+                // Update product total in the table
+                const totalCell = document.querySelector(`#productTable tr:nth-child(${i + 1}) .total`);
+                totalCell.textContent = productTotal.toLocaleString('fa-IR') + ' تومان';
+                subtotal += productTotal;
+            }
+
+            // Calculate discount
+            let discountPercent = 0;
+            if (subtotal >= 20000000) {
+                discountPercent = 20;
+            } else if (subtotal >= 10000000) {
+                discountPercent = 10;
+            } else if (subtotal > 0) {
+                discountPercent = 5;
+            }
+            const discountAmount = subtotal * (discountPercent / 100);
+            const total = subtotal - discountAmount;
+
+            // Update Order Summary
+            document.getElementById('subtotal').textContent = `جمع کل: ${subtotal.toLocaleString('fa-IR')} تومان`;
+            document.getElementById('discount').textContent = `تخفیف: ${discountPercent}% (${discountAmount.toLocaleString('fa-IR')} تومان)`;
+            document.getElementById('total').textContent = `مجموع: ${total.toLocaleString('fa-IR')} تومان`;
+
+            // Update Ordered Products table
+            const orderedTable = document.getElementById('orderedProducts');
+            // Clear existing rows (except header)
+            while (orderedTable.rows.length > 1) {
+                orderedTable.deleteRow(1);
+            }
+            // Add new rows
+            orderedItems.forEach(item => {
+                const row = orderedTable.insertRow();
+                row.insertCell().textContent = item.product;
+                row.insertCell().textContent = item.color;
+                row.insertCell().textContent = item.price.toLocaleString('fa-IR') + ' تومان';
+                row.insertCell().textContent = item.quantity;
+                row.insertCell().textContent = item.total.toLocaleString('fa-IR') + ' تومان';
+            });
+        }
+
+        function submitOrder(event) {
+            event.preventDefault();
+
+            // Get customer information
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const address = document.getElementById('address').value;
+
+            // Collect order details
+            const orderedItems = [];
+            let subtotal = 0;
+            for (let i = 1; i <= 21; i++) {
+                colors.forEach(color => {
+                    const input = document.querySelector(`.quantity[data-product="${i}"][data-color="${color}"]`);
+                    const quantity = parseInt(input.value) || 0;
+                    if (quantity > 0) {
+                        const price = prices[i];
+                        const itemTotal = quantity * price;
+                        subtotal += itemTotal;
+                        orderedItems.push({
+                            product: `محصول ${i}`,
+                            color: color,
+                            quantity: quantity,
+                            price: price,
+                            total: itemTotal
+                        });
+                    }
+                });
+            }
+
+            // Calculate discount
+            let discountPercent = 0;
+            if (subtotal >= 20000000) {
+                discountPercent = 20;
+            } else if (subtotal >= 10000000) {
+                discountPercent = 10;
+            } else if (subtotal > 0) {
+                discountPercent = 5;
+            }
+            const discountAmount = subtotal * (discountPercent / 100);
+            const total = subtotal - discountAmount;
+
+            // Format WhatsApp message
+            let message = `سفارش جدید:\n\nاطلاعات مشتری:\nنام: ${name}\nایمیل: ${email}\nآدرس: ${address}\n\nمحصولات سفارش‌شده:\n`;
+            orderedItems.forEach(item => {
+                message += `${item.product} (${item.color}): ${item.quantity} عدد، قیمت واحد: ${item.price.toLocaleString('fa-IR')} تومان، مجموع: ${item.total.toLocaleString('fa-IR')} تومان\n`;
+            });
+            message += `\nجمع کل: ${subtotal.toLocaleString('fa-IR')} تومان\n`;
+            message += `تخفیف: ${discountPercent}% (${discountAmount.toLocaleString('fa-IR')} تومان)\n`;
+            message += `مجموع نهایی: ${total.toLocaleString('fa-IR')} تومان`;
+
+            // WhatsApp phone number (replace with actual number)
+            const phoneNumber = '+1234567890';
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+            // Open WhatsApp
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
 </body>
 </html>
