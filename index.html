@@ -38,12 +38,16 @@
         return gk_fileData[filename] || "";
         }
         </script><!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Order System</title>
+    <title>سیستم سفارش محصول</title>
+    <link href="https://cdn.jsdelivr.net/npm/vazir-font@27.1.0/dist/font-face.css" rel="stylesheet" type="text/css">
     <style>
+        body {
+            font-family: 'Vazir', sans-serif;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -68,6 +72,7 @@
             width: 100%;
             padding: 8px;
             margin: 5px 0;
+            text-align: right;
         }
         button {
             display: block;
@@ -87,308 +92,313 @@
             max-width: 200px;
             height: auto;
         }
+        /* RTL adjustments */
+        body, table, input, textarea {
+            direction: rtl;
+            text-align: right;
+        }
     </style>
 </head>
 <body>
-    <img src="Perlapots_Logo" alt="Company Logo" class="logo">
-    <h1>Product Order System</h1>
+    <img src="logo.png" alt="لوگوی شرکت" class="logo">
+    <h1>سیستم سفارش محصول</h1>
 
-    <h2>Product Selection</h2>
+    <h2>انتخاب محصول</h2>
     <table>
         <tr>
-            <th>Product Name</th>
-            <th>Price</th>
-            <th>Red</th>
-            <th>Blue</th>
-            <th>Green</th>
-            <th>Yellow</th>
-            <th>Black</th>
-            <th>White</th>
-            <th>Quantity</th>
-            <th>Total</th>
+            <th>نام محصول</th>
+            <th>قیمت</th>
+            <th>قرمز</th>
+            <th>آبی</th>
+            <th>سبز</th>
+            <th>زرد</th>
+            <th>سیاه</th>
+            <th>سفید</th>
+            <th>تعداد</th>
+            <th>مجموع</th>
         </tr>
         <tr>
-            <td>Product 1</td>
-            <td>$10.00</td>
-            <td><input type="checkbox" name="product1_color" value="Red"></td>
-            <td><input type="checkbox" name="product1_color" value="Blue"></td>
-            <td><input type="checkbox" name="product1_color" value="Green"></td>
-            <td><input type="checkbox" name="product1_color" value="Yellow"></td>
-            <td><input type="checkbox" name="product1_color" value="Black"></td>
-            <td><input type="checkbox" name="product1_color" value="White"></td>
+            <td>محصول ۱</td>
+            <td>۱۰,۰۰۰ تومان</td>
+            <td><input type="checkbox" name="product1_color" value="قرمز"></td>
+            <td><input type="checkbox" name="product1_color" value="آبی"></td>
+            <td><input type="checkbox" name="product1_color" value="سبز"></td>
+            <td><input type="checkbox" name="product1_color" value="زرد"></td>
+            <td><input type="checkbox" name="product1_color" value="سیاه"></td>
+            <td><input type="checkbox" name="product1_color" value="سفید"></td>
             <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>$0.00</td>
+            <td>۰ تومان</td>
         </tr>
         <tr>
-            <td>Product 2</td>
-            <td>$12.00</td>
-            <td><input type="checkbox" name="product2_color" value="Red"></td>
-            <td><input type="checkbox" name="product2_color" value="Blue"></td>
-            <td><input type="checkbox" name="product2_color" value="Green"></td>
-            <td><input type="checkbox" name="product2_color" value="Yellow"></td>
-            <td><input type="checkbox" name="product2_color" value="Black"></td>
-            <td><input type="checkbox" name="product2_color" value="White"></td>
+            <td>محصول ۲</td>
+            <td>۱۲,۰۰۰ تومان</td>
+            <td><input type="checkbox" name="product2_color" value="قرمز"></td>
+            <td><input type="checkbox" name="product2_color" value="آبی"></td>
+            <td><input type="checkbox" name="product2_color" value="سبز"></td>
+            <td><input type="checkbox" name="product2_color" value="زرد"></td>
+            <td><input type="checkbox" name="product2_color" value="سیاه"></td>
+            <td><input type="checkbox" name="product2_color" value="سفید"></td>
             <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>$0.00</td>
+            <td>۰ تومان</td>
         </tr>
         <tr>
-            <td>Product 3</td>
-            <td>$15.00</td>
-            <td><input type="checkbox" name="product3_color" value="Red"></td>
-            <td><input type="checkbox" name="product3_color" value="Blue"></td>
-            <td><input type="checkbox" name="product3_color" value="Green"></td>
-            <td><input type="checkbox" name="product3_color" value="Yellow"></td>
-            <td><input type="checkbox" name="product3_color" value="Black"></td>
-            <td><input type="checkbox" name="product3_color" value="White"></td>
+            <td>محصول ۳</td>
+            <td>۱۵,۰۰۰ تومان</td>
+            <td><input type="checkbox" name="product3_color" value="قرمز"></td>
+            <td><input type="checkbox" name="product3_color" value="آبی"></td>
+            <td><input type="checkbox" name="product3_color" value="سبز"></td>
+            <td><input type="checkbox" name="product3_color" value="زرد"></td>
+            <td><input type="checkbox" name="product3_color" value="سیاه"></td>
+            <td><input type="checkbox" name="product3_color" value="سفید"></td>
             <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>$0.00</td>
+            <td>۰ تومان</td>
         </tr>
         <tr>
-            <td>Product 4</td>
-            <td>$8.00</td>
-            <td><input type="checkbox" name="product4_color" value="Red"></td>
-            <td><input type="checkbox" name="product4_color" value="Blue"></td>
-            <td><input type="checkbox" name="product4_color" value="Green"></td>
-            <td><input type="checkbox" name="product4_color" value="Yellow"></td>
-            <td><input type="checkbox" name="product4_color" value="Black"></td>
-            <td><input type="checkbox" name="product4_color" value="White"></td>
+            <td>محصول ۴</td>
+            <td>۸,۰۰۰ تومان</td>
+            <td><input type="checkbox" name="product4_color" value="قرمز"></td>
+            <td><input type="checkbox" name="product4_color" value="آبی"></td>
+            <td><input type="checkbox" name="product4_color" value="سبز"></td>
+            <td><input type="checkbox" name="product4_color" value="زرد"></td>
+            <td><input type="checkbox" name="product4_color" value="سیاه"></td>
+            <td><input type="checkbox" name="product4_color" value="سفید"></td>
             <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>$0.00</td>
+            <td>۰ تومان</td>
         </tr>
         <tr>
-            <td>Product 5</td>
-            <td>$20.00</td>
-            <td><input type="checkbox" name="product5_color" value="Red"></td>
-            <td><input type="checkbox" name="product5_color" value="Blue"></td>
-            <td><input type="checkbox" name="product5_color" value="Green"></td>
-            <td><input type="checkbox" name="product5_color" value="Yellow"></td>
-            <td><input type="checkbox" name="product5_color" value="Black"></td>
-            <td><input type="checkbox" name="product5_color" value="White"></td>
+            <td>محصول ۵</td>
+            <td>۲۰,۰۰۰ تومان</td>
+            <td><input type="checkbox" name="product5_color" value="قرمز"></td>
+            <td><input type="checkbox" name="product5_color" value="آبی"></td>
+            <td><input type="checkbox" name="product5_color" value="سبز"></td>
+            <td><input type="checkbox" name="product5_color" value="زرد"></td>
+            <td><input type="checkbox" name="product5_color" value="سیاه"></td>
+            <td><input type="checkbox" name="product5_color" value="سفید"></td>
             <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>$0.00</td>
+            <td>۰ تومان</td>
         </tr>
         <tr>
-            <td>Product 6</td>
-            <td>$18.00</td>
-            <td><input type="checkbox" name="product6_color" value="Red"></td>
-            <td><input type="checkbox" name="product6_color" value="Blue"></td>
-            <td><input type="checkbox" name="product6_color" value="Green"></td>
-            <td><input type="checkbox" name="product6_color" value="Yellow"></td>
-            <td><input type="checkbox" name="product6_color" value="Black"></td>
-            <td><input type="checkbox" name="product6_color" value="White"></td>
+            <td>محصول ۶</td>
+            <td>۱۸,۰۰۰ تومان</td>
+            <td><input type="checkbox" name="product6_color" value="قرمز"></td>
+            <td><input type="checkbox" name="product6_color" value="آبی"></td>
+            <td><input type="checkbox" name="product6_color" value="سبز"></td>
+            <td><input type="checkbox" name="product6_color" value="زرد"></td>
+            <td><input type="checkbox" name="product6_color" value="سیاه"></td>
+            <td><input type="checkbox" name="product6_color" value="سفید"></td>
             <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>$0.00</td>
+            <td>۰ تومان</td>
         </tr>
         <tr>
-            <td>Product 7</td>
-            <td>$25.00</td>
-            <td><input type="checkbox" name="product7_color" value="Red"></td>
-            <td><input type="checkbox" name="product7_color" value="Blue"></td>
-            <td><input type="checkbox" name="product7_color" value="Green"></td>
-            <td><input type="checkbox" name="product7_color" value="Yellow"></td>
-            <td><input type="checkbox" name="product7_color" value="Black"></td>
-            <td><input type="checkbox" name="product7_color" value="White"></td>
+            <td>محصول ۷</td>
+            <td>۲۵,۰۰۰ تومان</td>
+            <td><input type="checkbox" name="product7_color" value="قرمز"></td>
+            <td><input type="checkbox" name="product7_color" value="آبی"></td>
+            <td><input type="checkbox" name="product7_color" value="سبز"></td>
+            <td><input type="checkbox" name="product7_color" value="زرد"></td>
+            <td><input type="checkbox" name="product7_color" value="سیاه"></td>
+            <td><input type="checkbox" name="product7_color" value="سفید"></td>
             <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>$0.00</td>
+            <td>۰ تومان</td>
         </tr>
         <tr>
-            <td>Product 8</td>
-            <td>$9.00</td>
-            <td><input type="checkbox" name="product8_color" value="Red"></td>
-            <td><input type="checkbox" name="product8_color" value="Blue"></td>
-            <td><input type="checkbox" name="product8_color" value="Green"></td>
-            <td><input type="checkbox" name="product8_color" value="Yellow"></td>
-            <td><input type="checkbox" name="product8_color" value="Black"></td>
-            <td><input type="checkbox" name="product8_color" value="White"></td>
+            <td>محصول ۸</td>
+            <td>۹,۰۰۰ تومان</td>
+            <td><input type="checkbox" name="product8_color" value="قرمز"></td>
+            <td><input type="checkbox" name="product8_color" value="آبی"></td>
+            <td><input type="checkbox" name="product8_color" value="سبز"></td>
+            <td><input type="checkbox" name="product8_color" value="زرد"></td>
+            <td><input type="checkbox" name="product8_color" value="سیاه"></td>
+            <td><input type="checkbox" name="product8_color" value="سفید"></td>
             <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>$0.00</td>
+            <td>۰ تومان</td>
         </tr>
         <tr>
-            <td>Product 9</td>
-            <td>$14.00</td>
-            <td><input type="checkbox" name="product9_color" value="Red"></td>
-            <td><input type="checkbox" name="product9_color" value="Blue"></td>
-            <td><input type="checkbox" name="product9_color" value="Green"></td>
-            <td><input type="checkbox" name="product9_color" value="Yellow"></td>
-            <td><input type="checkbox" name="product9_color" value="Black"></td>
-            <td><input type="checkbox" name="product9_color" value="White"></td>
+            <td>محصول ۹</td>
+            <td>۱۴,۰۰۰ تومان</td>
+            <td><input type="checkbox" name="product9_color" value="قرمز"></td>
+            <td><input type="checkbox" name="product9_color" value="آبی"></td>
+            <td><input type="checkbox" name="product9_color" value="سبز"></td>
+            <td><input type="checkbox" name="product9_color" value="زرد"></td>
+            <td><input type="checkbox" name="product9_color" value="سیاه"></td>
+            <td><input type="checkbox" name="product9_color" value="سفید"></td>
             <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>$0.00</td>
+            <td>۰ تومان</td>
         </tr>
         <tr>
-            <td>Product 10</td>
-            <td>$22.00</td>
-            <td><input type="checkbox" name="product10_color" value="Red"></td>
-            <td><input type="checkbox" name="product10_color" value="Blue"></td>
-            <td><input type="checkbox" name="product10_color" value="Green"></td>
-            <td><input type="checkbox" name="product10_color" value="Yellow"></td>
-            <td><input type="checkbox" name="product10_color" value="Black"></td>
-            <td><input type="checkbox" name="product10_color" value="White"></td>
+            <td>محصول ۱۰</td>
+            <td>۲۲,۰۰۰ تومان</td>
+            <td><input type="checkbox" name="product10_color" value="قرمز"></td>
+            <td><input type="checkbox" name="product10_color" value="آبی"></td>
+            <td><input type="checkbox" name="product10_color" value="سبز"></td>
+            <td><input type="checkbox" name="product10_color" value="زرد"></td>
+            <td><input type="checkbox" name="product10_color" value="سیاه"></td>
+            <td><input type="checkbox" name="product10_color" value="سفید"></td>
             <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>$0.00</td>
+            <td>۰ تومان</td>
         </tr>
         <tr>
-            <td>Product 11</td>
-            <td>$11.00</td>
-            <td><input type="checkbox" name="product11_color" value="Red"></td>
-            <td><input type="checkbox" name="product11_color" value="Blue"></td>
-            <td><input type="checkbox" name="product11_color" value="Green"></td>
-            <td><input type="checkbox" name="product11_color" value="Yellow"></td>
-            <td><input type="checkbox" name="product11_color" value="Black"></td>
-            <td><input type="checkbox" name="product11_color" value="White"></td>
+            <td>محصول ۱۱</td>
+            <td>۱۱,۰۰۰ تومان</td>
+            <td><input type="checkbox" name="product11_color" value="قرمز"></td>
+            <td><input type="checkbox" name="product11_color" value="آبی"></td>
+            <td><input type="checkbox" name="product11_color" value="سبز"></td>
+            <td><input type="checkbox" name="product11_color" value="زرد"></td>
+            <td><input type="checkbox" name="product11_color" value="سیاه"></td>
+            <td><input type="checkbox" name="product11_color" value="سفید"></td>
             <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>$0.00</td>
+            <td>۰ تومان</td>
         </tr>
         <tr>
-            <td>Product 12</td>
-            <td>$16.00</td>
-            <td><input type="checkbox" name="product12_color" value="Red"></td>
-            <td><input type="checkbox" name="product12_color" value="Blue"></td>
-            <td><input type="checkbox" name="product12_color" value="Green"></td>
-            <td><input type="checkbox" name="product12_color" value="Yellow"></td>
-            <td><input type="checkbox" name="product12_color" value="Black"></td>
-            <td><input type="checkbox" name="product12_color" value="White"></td>
+            <td>محصول ۱۲</td>
+            <td>۱۶,۰۰۰ تومان</td>
+            <td><input type="checkbox" name="product12_color" value="قرمز"></td>
+            <td><input type="checkbox" name="product12_color" value="آبی"></td>
+            <td><input type="checkbox" name="product12_color" value="سبز"></td>
+            <td><input type="checkbox" name="product12_color" value="زرد"></td>
+            <td><input type="checkbox" name="product12_color" value="سیاه"></td>
+            <td><input type="checkbox" name="product12_color" value="سفید"></td>
             <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>$0.00</td>
+            <td>۰ تومان</td>
         </tr>
         <tr>
-            <td>Product 13</td>
-            <td>$19.00</td>
-            <td><input type="checkbox" name="product13_color" value="Red"></td>
-            <td><input type="checkbox" name="product13_color" value="Blue"></td>
-            <td><input type="checkbox" name="product13_color" value="Green"></td>
-            <td><input type="checkbox" name="product13_color" value="Yellow"></td>
-            <td><input type="checkbox" name="product13_color" value="Black"></td>
-            <td><input type="checkbox" name="product13_color" value="White"></td>
+            <td>محصول ۱۳</td>
+            <td>۱۹,۰۰۰ تومان</td>
+            <td><input type="checkbox" name="product13_color" value="قرمز"></td>
+            <td><input type="checkbox" name="product13_color" value="آبی"></td>
+            <td><input type="checkbox" name="product13_color" value="سبز"></td>
+            <td><input type="checkbox" name="product13_color" value="زرد"></td>
+            <td><input type="checkbox" name="product13_color" value="سیاه"></td>
+            <td><input type="checkbox" name="product13_color" value="سفید"></td>
             <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>$0.00</td>
+            <td>۰ تومان</td>
         </tr>
         <tr>
-            <td>Product 14</td>
-            <td>$13.00</td>
-            <td><input type="checkbox" name="product14_color" value="Red"></td>
-            <td><input type="checkbox" name="product14_color" value="Blue"></td>
-            <td><input type="checkbox" name="product14_color" value="Green"></td>
-            <td><input type="checkbox" name="product14_color" value="Yellow"></td>
-            <td><input type="checkbox" name="product14_color" value="Black"></td>
-            <td><input type="checkbox" name="product14_color" value="White"></td>
+            <td>محصول ۱۴</td>
+            <td>۱۳,۰۰۰ تومان</td>
+            <td><input type="checkbox" name="product14_color" value="قرمز"></td>
+            <td><input type="checkbox" name="product14_color" value="آبی"></td>
+            <td><input type="checkbox" name="product14_color" value="سبز"></td>
+            <td><input type="checkbox" name="product14_color" value="زرد"></td>
+            <td><input type="checkbox" name="product14_color" value="سیاه"></td>
+            <td><input type="checkbox" name="product14_color" value="سفید"></td>
             <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>$0.00</td>
+            <td>۰ تومان</td>
         </tr>
         <tr>
-            <td>Product 15</td>
-            <td>$17.00</td>
-            <td><input type="checkbox" name="product15_color" value="Red"></td>
-            <td><input type="checkbox" name="product15_color" value="Blue"></td>
-            <td><input type="checkbox" name="product15_color" value="Green"></td>
-            <td><input type="checkbox" name="product15_color" value="Yellow"></td>
-            <td><input type="checkbox" name="product15_color" value="Black"></td>
-            <td><input type="checkbox" name="product15_color" value="White"></td>
+            <td>محصول ۱۵</td>
+            <td>۱۷,۰۰۰ تومان</td>
+            <td><input type="checkbox" name="product15_color" value="قرمز"></td>
+            <td><input type="checkbox" name="product15_color" value="آبی"></td>
+            <td><input type="checkbox" name="product15_color" value="سبز"></td>
+            <td><input type="checkbox" name="product15_color" value="زرد"></td>
+            <td><input type="checkbox" name="product15_color" value="سیاه"></td>
+            <td><input type="checkbox" name="product15_color" value="سفید"></td>
             <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>$0.00</td>
+            <td>۰ تومان</td>
         </tr>
         <tr>
-            <td>Product 16</td>
-            <td>$21.00</td>
-            <td><input type="checkbox" name="product16_color" value="Red"></td>
-            <td><input type="checkbox" name="product16_color" value="Blue"></td>
-            <td><input type="checkbox" name="product16_color" value="Green"></td>
-            <td><input type="checkbox" name="product16_color" value="Yellow"></td>
-            <td><input type="checkbox" name="product16_color" value="Black"></td>
-            <td><input type="checkbox" name="product16_color" value="White"></td>
+            <td>محصول ۱۶</td>
+            <td>۲۱,۰۰۰ تومان</td>
+            <td><input type="checkbox" name="product16_color" value="قرمز"></td>
+            <td><input type="checkbox" name="product16_color" value="آبی"></td>
+            <td><input type="checkbox" name="product16_color" value="سبز"></td>
+            <td><input type="checkbox" name="product16_color" value="زرد"></td>
+            <td><input type="checkbox" name="product16_color" value="سیاه"></td>
+            <td><input type="checkbox" name="product16_color" value="سفید"></td>
             <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>$0.00</td>
+            <td>۰ تومان</td>
         </tr>
         <tr>
-            <td>Product 17</td>
-            <td>$10.50</td>
-            <td><input type="checkbox" name="product17_color" value="Red"></td>
-            <td><input type="checkbox" name="product17_color" value="Blue"></td>
-            <td><input type="checkbox" name="product17_color" value="Green"></td>
-            <td><input type="checkbox" name="product17_color" value="Yellow"></td>
-            <td><input type="checkbox" name="product17_color" value="Black"></td>
-            <td><input type="checkbox" name="product17_color" value="White"></td>
+            <td>محصول ۱۷</td>
+            <td>۱۰,۵۰۰ تومان</td>
+            <td><input type="checkbox" name="product17_color" value="قرمز"></td>
+            <td><input type="checkbox" name="product17_color" value="آبی"></td>
+            <td><input type="checkbox" name="product17_color" value="سبز"></td>
+            <td><input type="checkbox" name="product17_color" value="زرد"></td>
+            <td><input type="checkbox" name="product17_color" value="سیاه"></td>
+            <td><input type="checkbox" name="product17_color" value="سفید"></td>
             <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>$0.00</td>
+            <td>۰ تومان</td>
         </tr>
         <tr>
-            <td>Product 18</td>
-            <td>$23.00</td>
-            <td><input type="checkbox" name="product18_color" value="Red"></td>
-            <td><input type="checkbox" name="product18_color" value="Blue"></td>
-            <td><input type="checkbox" name="product18_color" value="Green"></td>
-            <td><input type="checkbox" name="product18_color" value="Yellow"></td>
-            <td><input type="checkbox" name="product18_color" value="Black"></td>
-            <td><input type="checkbox" name="product18_color" value="White"></td>
+            <td>محصول ۱۸</td>
+            <td>۲۳,۰۰۰ تومان</td>
+            <td><input type="checkbox" name="product18_color" value="قرمز"></td>
+            <td><input type="checkbox" name="product18_color" value="آبی"></td>
+            <td><input type="checkbox" name="product18_color" value="سبز"></td>
+            <td><input type="checkbox" name="product18_color" value="زرد"></td>
+            <td><input type="checkbox" name="product18_color" value="سیاه"></td>
+            <td><input type="checkbox" name="product18_color" value="سفید"></td>
             <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>$0.00</td>
+            <td>۰ تومان</td>
         </tr>
         <tr>
-            <td>Product 19</td>
-            <td>$14.50</td>
-            <td><input type="checkbox" name="product19_color" value="Red"></td>
-            <td><input type="checkbox" name="product19_color" value="Blue"></td>
-            <td><input type="checkbox" name="product19_color" value="Green"></td>
-            <td><input type="checkbox" name="product19_color" value="Yellow"></td>
-            <td><input type="checkbox" name="product19_color" value="Black"></td>
-            <td><input type="checkbox" name="product19_color" value="White"></td>
+            <td>محصول ۱۹</td>
+            <td>۱۴,۵۰۰ تومان</td>
+            <td><input type="checkbox" name="product19_color" value="قرمز"></td>
+            <td><input type="checkbox" name="product19_color" value="آبی"></td>
+            <td><input type="checkbox" name="product19_color" value="سبز"></td>
+            <td><input type="checkbox" name="product19_color" value="زرد"></td>
+            <td><input type="checkbox" name="product19_color" value="سیاه"></td>
+            <td><input type="checkbox" name="product19_color" value="سفید"></td>
             <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>$0.00</td>
+            <td>۰ تومان</td>
         </tr>
         <tr>
-            <td>Product 20</td>
-            <td>$24.00</td>
-            <td><input type="checkbox" name="product20_color" value="Red"></td>
-            <td><input type="checkbox" name="product20_color" value="Blue"></td>
-            <td><input type="checkbox" name="product20_color" value="Green"></td>
-            <td><input type="checkbox" name="product20_color" value="Yellow"></td>
-            <td><input type="checkbox" name="product20_color" value="Black"></td>
-            <td><input type="checkbox" name="product20_color" value="White"></td>
+            <td>محصول ۲۰</td>
+            <td>۲۴,۰۰۰ تومان</td>
+            <td><input type="checkbox" name="product20_color" value="قرمز"></td>
+            <td><input type="checkbox" name="product20_color" value="آبی"></td>
+            <td><input type="checkbox" name="product20_color" value="سبز"></td>
+            <td><input type="checkbox" name="product20_color" value="زرد"></td>
+            <td><input type="checkbox" name="product20_color" value="سیاه"></td>
+            <td><input type="checkbox" name="product20_color" value="سفید"></td>
             <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>$0.00</td>
+            <td>۰ تومان</td>
         </tr>
         <tr>
-            <td>Product 21</td>
-            <td>$11.50</td>
-            <td><input type="checkbox" name="product21_color" value="Red"></td>
-            <td><input type="checkbox" name="product21_color" value="Blue"></td>
-            <td><input type="checkbox" name="product21_color" value="Green"></td>
-            <td><input type="checkbox" name="product21_color" value="Yellow"></td>
-            <td><input type="checkbox" name="product21_color" value="Black"></td>
-            <td><input type="checkbox" name="product21_color" value="White"></td>
+            <td>محصول ۲۱</td>
+            <td>۱۱,۵۰۰ تومان</td>
+            <td><input type="checkbox" name="product21_color" value="قرمز"></td>
+            <td><input type="checkbox" name="product21_color" value="آبی"></td>
+            <td><input type="checkbox" name="product21_color" value="سبز"></td>
+            <td><input type="checkbox" name="product21_color" value="زرد"></td>
+            <td><input type="checkbox" name="product21_color" value="سیاه"></td>
+            <td><input type="checkbox" name="product21_color" value="سفید"></td>
             <td><input type="number" min="0" value="0" style="width: 60px;"></td>
-            <td>$0.00</td>
+            <td>۰ تومان</td>
         </tr>
     </table>
 
-    <h2>Order Summary</h2>
-    <p>Subtotal: $0.00</p>
-    <p>Discount: 0% ($0.00)</p>
-    <p><strong>Total: $0.00</strong></p>
+    <h2>خلاصه سفارش</h2>
+    <p>جمع کل: ۰ تومان</p>
+    <p>تخفیف: ۰٪ (۰ تومان)</p>
+    <p><strong>مجموع: ۰ تومان</strong></p>
 
-    <h2>Ordered Products</h2>
+    <h2>محصولات سفارش‌شده</h2>
     <table>
         <tr>
-            <th>Product Name</th>
-            <th>Color</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Total</th>
+            <th>نام محصول</th>
+            <th>رنگ</th>
+            <th>قیمت</th>
+            <th>تعداد</th>
+            <th>مجموع</th>
         </tr>
     </table>
 
-    <h2>Customer Information</h2>
+    <h2>اطلاعات مشتری</h2>
     <div class="form-container">
         <form>
-            <label for="name">Name:</label>
+            <label for="name">نام:</label>
             <input type="text" id="name" name="name" required>
-            <label for="email">Email:</label>
+            <label for="email">ایمیل:</label>
             <input type="email" id="email" name="email" required>
-            <label for="address">Address:</label>
+            <label for="address">آدرس:</label>
             <textarea id="address" name="address" required></textarea>
         </form>
     </div>
 
-    <button>Submit Order</button>
+    <button>ارسال سفارش</button>
 </body>
 </html>
