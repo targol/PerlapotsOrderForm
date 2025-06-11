@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Order System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .color-box { width: 20px; height: 20px; display: inline-block; margin-right: 5px; }
+        .invalid { border: 2px solid red; }
+    </style>
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+        <h1 class="text-2xl font-bold mb-6 text-center">Product Order System</h1>
+
+        <!-- Product Table -->
+        <table id="productTable" class="w-full mb-6 border-collapse">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="p-3 text-left">Product Name</th>
+                    <th class="p-3 text-left">Price</th>
+                    <th class="p-3 text-left">Colors</th>
+                    <th class="p-3 text-left">Quantity</th>
+                    <th class="p-3 text-left">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Products will be dynamically added here -->
+            </tbody>
+        </table>
+
+        <!-- Order Summary -->
+        <div class="mb-6">
+            <h2 class="text-xl font-semibold">Order Summary</h2>
+            <p>Subtotal: $<span id="subtotal">0.00</span></p>
+            <p>Discount: <span id="discount">0%</span> (<span id="discountAmount">$0.00</span>)</p>
+            <p class="font-bold">Total: $<span id="total">0.00</span></p>
+        </div>
+
+        <!-- Ordered Products Table -->
+        <div class="mb-6">
+            <h2 class="text-xl font-semibold mb-4">Ordered Products</h2>
+            <table id="orderedProductsTable" class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="p-3 text-left">Product Name</th>
+                        <th class="p-3 text-left">Color</th>
+                        <th class="p-3 text-left">Price</th>
+                        <th class="p-3 text-left">Quantity</th>
+                        <th class="p-3 text-left">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Ordered products will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Customer Information Form -->
+        <div class="mb-6">
+            <h2 class="text-xl font-semibold mb-4">Customer Information</h2>
+            <div class="grid grid-cols-1 gap-4">
+                <input id="customerName" type="text" placeholder="Full Name" class="p-2 border rounded">
+                <input id="phoneNumber" type="tel" placeholder="Phone Number" class="p-2 border rounded">
+                <input id="address" type="text" placeholder="Address" class="p-2 border rounded">
+            </div>
+        </div>
+
+        <button onclick="submitOrder()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Submit Order</button>
+    </div>
+
+    <script>
+        const products = [
+            { name: "T-Shirt", price: 19.99, colors: ["Red", "Blue", "Green", "Black", "White", "Yellow"] },
+            { name: "Jeans", price: 49.99, colors: ["Red", "Blue", "Green", "Black", "White", "Yellow"] },
+            { name: "Jacket", price: 89.99, colors: ["Red", "Blue", "Green", "Black", "White", "Yellow"] }
+        ];
+
+        const colorStyles = {
+            Red: "#ff0000", Blue: "#0000ff", Green: "#00ff00",
+            Black: "#000000", White: "#ffffff", Yellow: "#ffff00"
+        };
+
+        function renderProducts() {
+            const tbody = document.querySelector("#productTable tbody");
+            tbody.innerHTML = "";
+            products.forEach((product, index) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td class="p-3">${product.name}</td>
+                    <td class="p-3">$${product.price.toFixed(2)}</td>
+                    <td class="p-3">
+                        ${product.colors.map(color => `
+                            <div>
+                                <span class="color-box" style="background-color: ${colorStyles[color]}"></span>
+                                ${color}
+                                <input type="number" min="0" value="${product[color] || 0}" class="w-16 p-1 border rounded" 
+                                       onchange="updateRowTotal(${index}, '${color}', this.value)">
+                            </div>
+                        `).join("")}
+                    </td>
+                    <td class="p-3" id="quantity-${index}">0</td>
+                    <td class="p-3" id="total-${index}">$0.00</td>
+                `;
+                tbody.appendChild(row);
+            });
+            updateOrderSummary();
+            updateOrderedProductsTable();
+        }
+
+        function updateRowTotal(productIndex, color, quantity) {
+            const product = products[productIndex];
+            product[color] = parseInt(quantity) || 0;
+            const totalQuantity = product.colors.reduce((sum, c) => sum + (product[c] || 0), 0);
+            const totalPrice = totalQuantity * product.price;
+            document.getElementById(`quantity-${productIndex}`).textContent = totalQuantity;
+            document.getElementById(`total-${productIndex}`).textContent = `$${totalPrice.toFixed(2)}`;
+            updateOrderSummary();
+            updateOrderedProductsTable();
+        }
+
+        function updateOrderSummary() {
+            let subtotal = 0;
+            products.forEach((product, index) => {
+                const totalQuantity = product.colors.reduce((sum, c) => sum + (product[c] || 0), 0);
+                subtotal += totalQuantity * product.price;
+            });
+
+            let discount = 0;
+            if (subtotal >= 200) discount = 20;
+            else if (subtotal >= 100) discount = 10;
+            else if (subtotal >= 50) discount = 5;
+
+            const discountAmount = subtotal * (discount / 100);
+            const total = subtotal - discountAmount;
+
+            document.getElementById("subtotal").textContent = subtotal.toFixed(2);
+            document.getElementById("discount").textContent = `${discount}%`;
+            document.getElementById("discountAmount").textContent = `$${discountAmount.toFixed(2)}`;
+            document.getElementById("total").textContent = total.toFixed(2);
+        }
+
+        function updateOrderedProductsTable() {
+            const tbody = document.querySelector("#orderedProductsTable tbody");
+            tbody.innerHTML = "";
+            products.forEach(product => {
+                product.colors.forEach(color => {
+                    const quantity = product[color] || 0;
+                    if (quantity > 0) {
+                        const total = (quantity * product.price).toFixed(2);
+                        const row = document.createElement("tr");
+                        row.innerHTML = `
+                            <td class="p-3">${product.name}</td>
+                            <td class="p-3">
+                                <span class="color-box" style="background-color: ${colorStyles[color]}"></span>
+                                ${color}
+                            </td>
+                            <td class="p-3">$${product.price.toFixed(2)}</td>
+                            <td class="p-3">${quantity}</td>
+                            <td class="p-3">$${total}</td>
+                        `;
+                        tbody.appendChild(row);
+                    }
+                });
+            });
+        }
+
+        function validateForm() {
+            const name = document.getElementById("customerName");
+            const phone = document.getElementById("phoneNumber");
+            const address = document.getElementById("address");
+            let isValid = true;
+
+            [name, phone, address].forEach(input => {
+                input.classList.remove("invalid");
+                if (!input.value.trim()) {
+                    input.classList.add("invalid");
+                    isValid = false;
+                }
+            });
+
+            return isValid;
+        }
+
+        function submitOrder() {
+            if (!validateForm()) {
+                alert("Please fill in all customer information fields.");
+                return;
+            }
+
+            const order = {
+                customer: {
+                    name: document.getElementById("customerName").value,
+                    phone: document.getElementById("phoneNumber").value,
+                    address: document.getElementById("address").value
+                },
+                products: products.map(p => ({
+                    name: p.name,
+                    price: p.price,
+                    quantities: p.colors.map(c => ({ color: c, quantity: p[c] || 0 }))
+                })),
+                subtotal: parseFloat(document.getElementById("subtotal").textContent),
+                discount: document.getElementById("discount").textContent,
+                total: parseFloat(document.getElementById("total").textContent)
+            };
+
+            console.log("Order Submitted:", order);
+            alert("Order submitted successfully! Check console for details.");
+        }
+
+        // Initialize the page
+        renderProducts();
+    </script>
+</body>
+</html>
