@@ -465,7 +465,7 @@
                 discountPercent = 10;
             } else if (subtotal >= 10000000) {
                 discountPercent = 5;
-            } else discountPercent = 5;
+            } else discountPercent = 0;
             
             const discountAmount = subtotal * (discountPercent / 100);
             const total = subtotal - discountAmount;
@@ -548,7 +548,7 @@
                 discountPercent = 10;
             } else if (subtotal >= 10000000) {
                 discountPercent = 5;
-            } else discountPercent = 5;
+            } else discountPercent = 0;
                 
             const discountAmount = subtotal * (discountPercent / 100);
             const total = subtotal - discountAmount;
