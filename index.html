@@ -555,18 +555,18 @@
 
             // Format WhatsApp message
             let message = `سفارش جدید:\n\nاطلاعات مشتری:\nنام: ${name}\nشماره موبایل: ${mobile}\nآدرس: ${address}\n\nمحصولات سفارش‌شده:\n`;
-            orderedItems.forEach(item => {
-                message += `${item.product} (${item.color}): ${item.quantity} عدد، قیمت واحد: ${item.price.toLocaleString('fa-IR')} تومان، مجموع: ${item.total.toLocaleString('fa-IR')} تومان\n`;
-            });
-            message += `\nجمع کل: ${subtotal.toLocaleString('fa-IR')} تومان\n`;
-            message += `تخفیف: ${discountPercent}% (${discountAmount.toLocaleString('fa-IR')} تومان)\n`;
-            message += `مجموع نهایی: ${total.toLocaleString('fa-IR')} تومان`;
+            orderedItems.forEach((item, index) => {
+                message += `${index + 1}- ${item.product} (${item.color}): ${item.quantity} عدد، قیمت واحد: ${item.price.toLocaleString('fa-IR')} تومان، مجموع: ${item.total.toLocaleString('fa-IR')} تومان\n`;
+             });
+           message += `\nجمع کل: ${subtotal.toLocaleString('fa-IR')} تومان\n`;
+           message += `تخفیف: ${discountPercent}% (${discountAmount.toLocaleString('fa-IR')} تومان)\n`;
+           message += `مجموع نهایی: ${total.toLocaleString('fa-IR')} تومان`;
 
-            // WhatsApp phone number
-            const phoneNumber = '+989194762206';
-            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-
-            // Open WhatsApp
+          // WhatsApp submission
+          const phoneNumber = '+989361189022';
+          const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                
+           // Open WhatsApp
             window.open(whatsappUrl, '_blank');
         }
     </script>
