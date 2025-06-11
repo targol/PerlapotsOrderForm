@@ -1,216 +1,388 @@
-<!DOCTYPE html>
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Order System</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .color-box { width: 20px; height: 20px; display: inline-block; margin-right: 5px; }
-        .invalid { border: 2px solid red; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        input[type="text"], input[type="email"], textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+        }
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
-<body class="bg-gray-100 p-6">
-    <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
-        <h1 class="text-2xl font-bold mb-6 text-center">Product Order System</h1>
+<body>
+    <h1>Product Order System</h1>
 
-        <!-- Product Table -->
-        <table id="productTable" class="w-full mb-6 border-collapse">
-            <thead>
-                <tr class="bg-gray-200">
-                    <th class="p-3 text-left">Product Name</th>
-                    <th class="p-3 text-left">Price</th>
-                    <th class="p-3 text-left">Colors</th>
-                    <th class="p-3 text-left">Quantity</th>
-                    <th class="p-3 text-left">Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Products will be dynamically added here -->
-            </tbody>
-        </table>
+    <h2>Product Selection</h2>
+    <table>
+        <tr>
+            <th>Product Name</th>
+            <th>Price</th>
+            <th>Red</th>
+            <th>Blue</th>
+            <th>Green</th>
+            <th>Yellow</th>
+            <th>Black</th>
+            <th>White</th>
+            <th>Quantity</th>
+            <th>Total</th>
+        </tr>
+        <tr>
+            <td>Product 1</td>
+            <td>$10.00</td>
+            <td><input type="checkbox" name="product1_color" value="Red"></td>
+            <td><input type="checkbox" name="product1_color" value="Blue"></td>
+            <td><input type="checkbox" name="product1_color" value="Green"></td>
+            <td><input type="checkbox" name="product1_color" value="Yellow"></td>
+            <td><input type="checkbox" name="product1_color" value="Black"></td>
+            <td><input type="checkbox" name="product1_color" value="White"></td>
+            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
+            <td>$0.00</td>
+        </tr>
+        <tr>
+            <td>Product 2</td>
+            <td>$12.00</td>
+            <td><input type="checkbox" name="product2_color" value="Red"></td>
+            <td><input type="checkbox" name="product2_color" value="Blue"></td>
+            <td><input type="checkbox" name="product2_color" value="Green"></td>
+            <td><input type="checkbox" name="product2_color" value="Yellow"></td>
+            <td><input type="checkbox" name="product2_color" value="Black"></td>
+            <td><input type="checkbox" name="product2_color" value="White"></td>
+            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
+            <td>$0.00</td>
+        </tr>
+        <tr>
+            <td>Product 3</td>
+            <td>$15.00</td>
+            <td><input type="checkbox" name="product3_color" value="Red"></td>
+            <td><input type="checkbox" name="product3_color" value="Blue"></td>
+            <td><input type="checkbox" name="product3_color" value="Green"></td>
+            <td><input type="checkbox" name="product3_color" value="Yellow"></td>
+            <td><input type="checkbox" name="product3_color" value="Black"></td>
+            <td><input type="checkbox" name="product3_color" value="White"></td>
+            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
+            <td>$0.00</td>
+        </tr>
+        <tr>
+            <td>Product 4</td>
+            <td>$8.00</td>
+            <td><input type="checkbox" name="product4_color" value="Red"></td>
+            <td><input type="checkbox" name="product4_color" value="Blue"></td>
+            <td><input type="checkbox" name="product4_color" value="Green"></td>
+            <td><input type="checkbox" name="product4_color" value="Yellow"></td>
+            <td><input type="checkbox" name="product4_color" value="Black"></td>
+            <td><input type="checkbox" name="product4_color" value="White"></td>
+            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
+            <td>$0.00</td>
+        </tr>
+        <tr>
+            <td>Product 5</td>
+            <td>$20.00</td>
+            <td><input type="checkbox" name="product5_color" value="Red"></td>
+            <td><input type="checkbox" name="product5_color" value="Blue"></td>
+            <td><input type="checkbox" name="product5_color" value="Green"></td>
+            <td><input type="checkbox" name="product5_color" value="Yellow"></td>
+            <td><input type="checkbox" name="product5_color" value="Black"></td>
+            <td><input type="checkbox" name="product5_color" value="White"></td>
+            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
+            <td>$0.00</td>
+        </tr>
+        <tr>
+            <td>Product 6</td>
+            <td>$18.00</td>
+            <td><input type="checkbox" name="product6_color" value="Red"></td>
+            <td><input type="checkbox" name="product6_color" value="Blue"></td>
+            <td><input type="checkbox" name="product6_color" value="Green"></td>
+            <td><input type="checkbox" name="product6_color" value="Yellow"></td>
+            <td><input type="checkbox" name="product6_color" value="Black"></td>
+            <td><input type="checkbox" name="product6_color" value="White"></td>
+            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
+            <td>$0.00</td>
+        </tr>
+        <tr>
+            <td>Product 7</td>
+            <td>$25.00</td>
+            <td><input type="checkbox" name="product7_color" value="Red"></td>
+            <td><input type="checkbox" name="product7_color" value="Blue"></td>
+            <td><input type="checkbox" name="product7_color" value="Green"></td>
+            <td><input type="checkbox" name="product7_color" value="Yellow"></td>
+            <td><input type="checkbox" name="product7_color" value="Black"></td>
+            <td><input type="checkbox" name="product7_color" value="White"></td>
+            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
+            <td>$0.00</td>
+        </tr>
+        <tr>
+            <td>Product 8</td>
+            <td>$9.00</td>
+            <td><input type="checkbox" name="product8_color" value="Red"></td>
+            <td><input type="checkbox" name="product8_color" value="Blue"></td>
+            <td><input type="checkbox" name="product8_color" value="Green"></td>
+            <td><input type="checkbox" name="product8_color" value="Yellow"></td>
+            <td><input type="checkbox" name="product8_color" value="Black"></td>
+            <td><input type="checkbox" name="product8_color" value="White"></td>
+            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
+            <td>$0.00</td>
+        </tr>
+        <tr>
+            <td>Product 9</td>
+            <td>$14.00</td>
+            <td><input type="checkbox" name="product9_color" value="Red"></td>
+            <td><input type="checkbox" name="product9_color" value="Blue"></td>
+            <td><input type="checkbox" name="product9_color" value="Green"></td>
+            <td><input type="checkbox" name="product9_color" value="Yellow"></td>
+            <td><input type="checkbox" name="product9_color" value="Black"></td>
+            <td><input type="checkbox" name="product9_color" value="White"></td>
+            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
+            <td>$0.00</td>
+        </tr>
+        <tr>
+            <td>Product 10</td>
+            <td>$22.00</td>
+            <td><input type="checkbox" name="product10_color" value="Red"></td>
+            <td><input type="checkbox" name="product10_color" value="Blue"></td>
+            <td><input type="checkbox" name="product10_color" value="Green"></td>
+            <td><input type="checkbox" name="product10_color" value="Yellow"></td>
+            <td><input type="checkbox" name="product10_color" value="Black"></td>
+            <td><input type="checkbox" name="product10_color" value="White"></td>
+            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
+            <td>$ subtotal = 0
+            .00</td>
+        </tr>
+        <tr>
+            <td>Product 11</td>
+            <td>$11.00</td>
+            <td><input type="checkbox" name="product11_color" value="Red"></td>
+            <td><input type="checkbox" name="product11_color" value="Blue"></td>
+            <td><input type="checkbox" name="product11_color" value="Green"></td>
+            <td><input type="checkbox" name="product11_color" value="Yellow"></td>
+            <td><input type="checkbox" name="product11_color" value="Black"></td>
+            <td><input type="checkbox" name="product11_color" value="White"></td>
+            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
+            <td>$0.00</td>
+        </tr>
+        <tr>
+            <td>Product 12</td>
+            <td>$16.00</td>
+            <td><input type="checkbox" name="product12_color" value="Red"></td>
+            <td><input type="checkbox" name="product12_color" value="Blue"></td>
+            <td><input type="checkbox" name="product12_color" value="Green"></td>
+            <td><input type="checkbox" name="product12_color" value="Yellow"></td>
+            <td><input type="checkbox" name="product12_color" value="Black"></td>
+            <td><input type="checkbox" name="product12_color" value="White"></td>
+            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
+            <td>$0.00</td>
+        </tr>
+        <tr>
+            <td>Product 13</td>
+            <td>$19.00</td>
+            <td><input type="checkbox" name="product13_color" value="Red"></td>
+            <td><input type="checkbox" name="product13_color" value="Blue"></td>
+            <td><input type="checkbox" name="product13_color" value="Green"></td>
+            <td><input type="checkbox" name="product13_color" value="Yellow"></td>
+            <td><input type="checkbox" name="product13_color" value="Black"></td>
+            <td><input type="checkbox" name="product13_color" value="White"></td>
+            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
+            <td>$0.00</td>
+        </tr>
+        <tr>
+            <td>Product 14</td>
+            <td>$13.00</td>
+            <td><input type="checkbox" name="product14_color" value="Red"></td>
+            <td><input type="checkbox" name="product14_color" value="Blue"></td>
+            <td><input type="checkbox" name="product14_color" value="Green"></td>
+            <td><input type="checkbox" name="product14_color" value="Yellow"></td>
+            <td><input type="checkbox" name="product14_color" value="Black"></td>
+            <td><input type="checkbox" name="product14_color" value="White"></td>
+            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
+            <td>$0.00</td>
+        </tr>
+        <tr>
+            <td>Product 15</td>
+            <td>$17.00</td>
+            <td><input type="checkbox" name="product15_color" value="Red"></td>
+            <td><input type="checkbox" name="product15_color" value="Blue"></td>
+            <td><input type="checkbox" name="product15_color" value="Green"></td>
+            <td><input type="checkbox" name="product15_color" value="Yellow"></td>
+            <td><input type="checkbox" name="product15_color" value="Black"></td>
+            <td><input type="checkbox" name="product15_color" value="White"></td>
+            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
+            <td>$0.00</td>
+        </tr>
+        <tr>
+            <td>Product 16</td>
+            <td>$21.00</td>
+            <td><input type="checkbox" name="product16_color" value="Red"></td>
+            <td><input type="checkbox" name="product16_color" value="Blue"></td>
+            <td><input type="checkbox" name="product16_color" value="Green"></td>
+            <td><input type="checkbox" name="product16_color" value="Yellow"></td>
+            <td><input type="checkbox" name="product16_color" value="Black"></td>
+            <td><input type="checkbox" name="product16_color" value="White"></td>
+            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
+            <td>$0.00</td>
+        </tr>
+        <tr>
+            <td>Product 17</td>
+            <td>$10.50</td>
+            <td><input type="checkbox" name="product17_color" value="Red"></td>
+            <td><input type="checkbox" name="product17_color" value="Blue"></td>
+            <td><input type="checkbox" name="product17_color" value="Green"></td>
+            <td><input type="checkbox" name="product17_color" value="Yellow"></td>
+            <td><input type="checkbox" name="product17_color" value="Black"></td>
+            <td><input type="checkbox" name="product17_color" value="White"></td>
+            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
+            <td>$0.00</td>
+        </tr>
+        <tr>
+            <td>Product 18</td>
+            <td>$23.00</td>
+            <td><input type="checkbox" name="product18_color" value="Red"></td>
+            <td><input type="checkbox" name="product18_color" value="Blue"></td>
+            <td><input type="checkbox" name="product18_color" value="Green"></td>
+            <td><input type="checkbox" name="product18_color" value="Yellow"></td>
+            <td><input type="checkbox" name="product18_color" value="Black"></td>
+            <td><input type="checkbox" name="product18_color" value="White"></td>
+            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
+            <td>$0.00</td>
+        </tr>
+        <tr>
+            <td>Product 19</td>
+            <td>$14.50</td>
+            <td><input type="checkbox" name="product19_color" value="Red"></td>
+            <td><input type="checkbox" name="product19_color" value="Blue"></td>
+            <td><input type="checkbox" name="product19_color" value="Green"></td>
+            <td><input type="checkbox" name="product19_color" value="Yellow"></td>
+            <td><input type="checkbox" name="product19_color" value="Black"></td>
+            <td><input type="checkbox" name="product19_color" value="White"></td>
+            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
+            <td>$0.00</td>
+        </tr>
+        <tr>
+            <td>Product 20</td>
+            <td>$24.00</td>
+            <td><input type="checkbox" name="product20_color" value="Red"></td>
+            <td><input type="checkbox" name="product20_color" value="Blue"></td>
+            <td><input type="checkbox" name="product20_color" value="Green"></td>
+            <td><input type="checkbox" name="product20_color" value="Yellow"></td>
+            <td><input type="checkbox" name="product20_color" value="Black"></td>
+            <td><input type="checkbox" name="product20_color" value="White"></td>
+            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
+            <td>$0.00</td>
+        </tr>
+        <tr>
+            <td>Product 21</td>
+            <td>$11.50</td>
+            <td><input type="checkbox" name="product21_color" value="Red"></td>
+            <td><input type="checkbox" name="product21_color" value="Blue"></td>
+            <td><input type="checkbox" name="product21_color" value="Green"></td>
+            <td><input type="checkbox" name="product21_color" value="Yellow"></td>
+            <td><input type="checkbox" name="product21_color" value="Black"></td>
+            <td><input type="checkbox" name="product21_color" value="White"></td>
+            <td><input type="number" min="0" value="0" style="width: 60px;"></td>
+            <td>$0.00</td>
+        </tr>
+    </table>
 
-        <!-- Order Summary -->
-        <div class="mb-6">
-            <h2 class="text-xl font-semibold">Order Summary</h2>
-            <p>Subtotal: $<span id="subtotal">0.00</span></p>
-            <p>Discount: <span id="discount">0%</span> (<span id="discountAmount">$0.00</span>)</p>
-            <p class="font-bold">Total: $<span id="total">0.00</span></p>
-        </div>
+    <h2>Order Summary</h2>
+    <p>Subtotal: $0.00</p>
+    <p>Discount: 0% ($0.00)</p>
+    <p><strong>Total: $0.00</strong></p>
 
-        <!-- Ordered Products Table -->
-        <div class="mb-6">
-            <h2 class="text-xl font-semibold mb-4">Ordered Products</h2>
-            <table id="orderedProductsTable" class="w-full border-collapse">
-                <thead>
-                    <tr class="bg-gray-200">
-                        <th class="p-3 text-left">Product Name</th>
-                        <th class="p-3 text-left">Color</th>
-                        <th class="p-3 text-left">Price</th>
-                        <th class="p-3 text-left">Quantity</th>
-                        <th class="p-3 text-left">Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Ordered products will be dynamically added here -->
-                </tbody>
-            </table>
-        </div>
+    <h2>Ordered Products</h2>
+    <table>
+        <tr>
+            <th>Product Name</th>
+            <th>Color</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+        </tr>
+    </table>
 
-        <!-- Customer Information Form -->
-        <div class="mb-6">
-            <h2 class="text-xl font-semibold mb-4">Customer Information</h2>
-            <div class="grid grid-cols-1 gap-4">
-                <input id="customerName" type="text" placeholder="Full Name" class="p-2 border rounded">
-                <input id="phoneNumber" type="tel" placeholder="Phone Number" class="p-2 border rounded">
-                <input id="address" type="text" placeholder="Address" class="p-2 border rounded">
-            </div>
-        </div>
-
-        <button onclick="submitOrder()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Submit Order</button>
+    <h2>Customer Information</h2>
+    <div class="form-container">
+        <form>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <label for="address">Address:</label>
+            <textarea id="address" name="address" required></textarea>
+        </form>
     </div>
 
-    <script>
-        const products = [
-            { name: "T-Shirt", price: 19.99, colors: ["Red", "Blue", "Green", "Black", "White", "Yellow"] },
-            { name: "Jeans", price: 49.99, colors: ["Red", "Blue", "Green", "Black", "White", "Yellow"] },
-            { name: "Jacket", price: 89.99, colors: ["Red", "Blue", "Green", "Black", "White", "Yellow"] }
-        ];
-
-        const colorStyles = {
-            Red: "#ff0000", Blue: "#0000ff", Green: "#00ff00",
-            Black: "#000000", White: "#ffffff", Yellow: "#ffff00"
-        };
-
-        function renderProducts() {
-            const tbody = document.querySelector("#productTable tbody");
-            tbody.innerHTML = "";
-            products.forEach((product, index) => {
-                const row = document.createElement("tr");
-                row.innerHTML = `
-                    <td class="p-3">${product.name}</td>
-                    <td class="p-3">$${product.price.toFixed(2)}</td>
-                    <td class="p-3">
-                        ${product.colors.map(color => `
-                            <div>
-                                <span class="color-box" style="background-color: ${colorStyles[color]}"></span>
-                                ${color}
-                                <input type="number" min="0" value="${product[color] || 0}" class="w-16 p-1 border rounded" 
-                                       onchange="updateRowTotal(${index}, '${color}', this.value)">
-                            </div>
-                        `).join("")}
-                    </td>
-                    <td class="p-3" id="quantity-${index}">0</td>
-                    <td class="p-3" id="total-${index}">$0.00</td>
-                `;
-                tbody.appendChild(row);
-            });
-            updateOrderSummary();
-            updateOrderedProductsTable();
-        }
-
-        function updateRowTotal(productIndex, color, quantity) {
-            const product = products[productIndex];
-            product[color] = parseInt(quantity) || 0;
-            const totalQuantity = product.colors.reduce((sum, c) => sum + (product[c] || 0), 0);
-            const totalPrice = totalQuantity * product.price;
-            document.getElementById(`quantity-${productIndex}`).textContent = totalQuantity;
-            document.getElementById(`total-${productIndex}`).textContent = `$${totalPrice.toFixed(2)}`;
-            updateOrderSummary();
-            updateOrderedProductsTable();
-        }
-
-        function updateOrderSummary() {
-            let subtotal = 0;
-            products.forEach((product, index) => {
-                const totalQuantity = product.colors.reduce((sum, c) => sum + (product[c] || 0), 0);
-                subtotal += totalQuantity * product.price;
-            });
-
-            let discount = 0;
-            if (subtotal >= 200) discount = 20;
-            else if (subtotal >= 100) discount = 10;
-            else if (subtotal >= 50) discount = 5;
-
-            const discountAmount = subtotal * (discount / 100);
-            const total = subtotal - discountAmount;
-
-            document.getElementById("subtotal").textContent = subtotal.toFixed(2);
-            document.getElementById("discount").textContent = `${discount}%`;
-            document.getElementById("discountAmount").textContent = `$${discountAmount.toFixed(2)}`;
-            document.getElementById("total").textContent = total.toFixed(2);
-        }
-
-        function updateOrderedProductsTable() {
-            const tbody = document.querySelector("#orderedProductsTable tbody");
-            tbody.innerHTML = "";
-            products.forEach(product => {
-                product.colors.forEach(color => {
-                    const quantity = product[color] || 0;
-                    if (quantity > 0) {
-                        const total = (quantity * product.price).toFixed(2);
-                        const row = document.createElement("tr");
-                        row.innerHTML = `
-                            <td class="p-3">${product.name}</td>
-                            <td class="p-3">
-                                <span class="color-box" style="background-color: ${colorStyles[color]}"></span>
-                                ${color}
-                            </td>
-                            <td class="p-3">$${product.price.toFixed(2)}</td>
-                            <td class="p-3">${quantity}</td>
-                            <td class="p-3">$${total}</td>
-                        `;
-                        tbody.appendChild(row);
-                    }
-                });
-            });
-        }
-
-        function validateForm() {
-            const name = document.getElementById("customerName");
-            const phone = document.getElementById("phoneNumber");
-            const address = document.getElementById("address");
-            let isValid = true;
-
-            [name, phone, address].forEach(input => {
-                input.classList.remove("invalid");
-                if (!input.value.trim()) {
-                    input.classList.add("invalid");
-                    isValid = false;
-                }
-            });
-
-            return isValid;
-        }
-
-        function submitOrder() {
-            if (!validateForm()) {
-                alert("Please fill in all customer information fields.");
-                return;
-            }
-
-            const order = {
-                customer: {
-                    name: document.getElementById("customerName").value,
-                    phone: document.getElementById("phoneNumber").value,
-                    address: document.getElementById("address").value
-                },
-                products: products.map(p => ({
-                    name: p.name,
-                    price: p.price,
-                    quantities: p.colors.map(c => ({ color: c, quantity: p[c] || 0 }))
-                })),
-                subtotal: parseFloat(document.getElementById("subtotal").textContent),
-                discount: document.getElementById("discount").textContent,
-                total: parseFloat(document.getElementById("total").textContent)
-            };
-
-            console.log("Order Submitted:", order);
-            alert("Order submitted successfully! Check console for details.");
-        }
-
-        // Initialize the page
-        renderProducts();
-    </script>
+    <button>Submit Order</button>
 </body>
 </html>
