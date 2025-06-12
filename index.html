@@ -574,7 +574,7 @@
             //    let message = `سفارش جدید:\n\nاطلاعات مشتری:\nنام: ${name}\nشماره موبایل: ${mobile}\nآدرس: ${address}\n\nمحصولات سفارش‌شده:\n`;
            // orderedItems.forEach((item, index) => {
                 //message += `${index + 1}- ${item.product} (${item.color}): ${item.quantity} عدد، قیمت واحد: ${item.price.toLocaleString('fa-IR')} تومان، مجموع: ${item.total.toLocaleString('fa-IR')} تومان\n`;
-                  message += `${index + 1}- ${item.product}, تعداد کل: ${orderedItems.filter(i => i.product === item.product).reduce((sum, i) => sum + i.quantity, 0)} عدد, (${item.color}: ${item.quantity} عدد)\n`;
+                //message += `${index + 1}- ${item.product}, تعداد کل: ${orderedItems.filter(i => i.product === item.product).reduce((sum, i) => sum + i.quantity, 0)} عدد, (${item.color}: ${item.quantity} عدد)\n`;
            // });                
            message += `\nجمع کل: ${subtotal.toLocaleString('fa-IR')} تومان\n`;
            message += `تخفیف: ${discountPercent}% (${discountAmount.toLocaleString('fa-IR')} تومان)\n`;
