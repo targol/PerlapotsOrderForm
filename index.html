@@ -556,7 +556,7 @@
 
                 
             // Format WhatsApp message
-            let message = `سفارش جدید:\n\nاطلاعات مشتری:\nنام: ${name}\nشماره موبایل: ${mobile}\nآدرس: ${address}\n\nمحصولات سفارش‌شده:\n`;
+            let message = `سفارش جدید:\n\nاطلاعات مشتری:\nنام: ${name}\nشماره موبایل: ${mobile}\nآدرس: ${address}\n\nمحصولات سفارش‌ داده شده:\n`;
               const productGroups = {};
               orderedItems.forEach(item => {
               if (!productGroups[item.product]) {
@@ -567,7 +567,7 @@
               message += Object.keys(productGroups).map((product, index) => {
               const items = productGroups[product];
               const totalQuantity = items.reduce((sum, i) => sum + i.quantity, 0);
-              const colorDetails = items.map(i => `${i.color}: ${i.quantity} عدد`).join('، ');
+              const colorDetails = items.map(i => `${i.color}: ${i.quantity} `).join('، ');
               return `${index + 1}- ${product}، تعداد کل: ${totalQuantity} عدد (${colorDetails})\n`;
             }).join('');
                 
