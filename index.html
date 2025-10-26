@@ -1,3 +1,4 @@
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script type="text/javascript">
         var gk_isXlsx = false;
         var gk_xlsxFileLookup = {};
@@ -386,6 +387,41 @@
             <textarea id="address" required></textarea>
         </div>
 
+
+<!-- بخش قابل تبدیل به عکس -->
+<div id="invoice-preview" style="display: none; background: white; padding: 20px; margin: 20px auto; max-width: 600px; border: 1px solid #ddd; font-family: 'Vazir', sans-serif; direction: rtl;">
+  <div style="text-align: center; margin-bottom: 15px;">
+    <img src="Perlapots_Logo.jpg" alt="لوگو" style="height: 60px;">
+    <h2 style="margin: 10px 0; color: #2c3e50;">فاکتور سفارش PerlaPots</h2>
+  </div>
+  <div id="invoice-customer" style="margin-bottom: 15px; font-size: 14px;"></div>
+  <table style="width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 15px;">
+    <thead>
+      <tr style="background: #f8f9fa;">
+        <th style="border: 1px solid #ddd; padding: 8px;">محصول</th>
+        <th style="border: 1px solid #ddd; padding: 8px;">رنگ</th>
+        <th style="border: 1px solid #ddd; padding: 8px;">تعداد</th>
+        <th style="border: 1px solid #ddd; padding: 8px;">قیمت واحد</th>
+        <th style="border: 1px solid #ddd; padding: 8px;">جمع</th>
+      </tr>
+    </thead>
+    <tbody id="invoice-items"></tbody>
+  </table>
+  <div style="text-align: left; font-weight: bold; font-size: 14px;">
+    <div id="invoice-subtotal">جمع کل: ۰ تومان</div>
+    <div id="invoice-discount">تخفیف: ۰٪ (۰ تومان)</div>
+    <div id="invoice-total" style="font-size: 16px; color: #27ae60;">مبلغ قابل پرداخت: ۰ تومان</div>
+  </div>
+</div>
+
+<!-- دکمه دانلود فاکتور -->
+<button type="button" id="download-invoice" style="background: #3498db; margin: 10px auto; display: block;">
+  دانلود فاکتور به صورت عکس (JPG)
+</button>
+
+
+            
+
         <button type="submit">ارسال</button>
     </form>
 
@@ -590,6 +626,104 @@
            // Open WhatsApp
             window.open(whatsappUrl, '_blank');
         }
+    
+    
+    // دکمه دانلود فاکتور
+document.getElementById('download-invoice').addEventListener('click', function() {
+    const name = document.getElementById('name').value.trim();
+    const mobile = document.getElementById('mobile').value.trim();
+    const address = document.getElementById('address').value.trim();
+
+    if (!name || !mobile || !address) {
+        alert('لطفاً نام، موبایل و آدرس را پر کنید.');
+        return;
+    }
+
+    // جمع‌آوری سفارشات
+    const orderedItems = [];
+    let subtotal = 0;
+    for (let i = 1; i <= 21; i++) {
+        const productName = document.querySelector(`#productTable tr:nth-child(${i + 1}) td:first-child`).textContent;
+        colors.forEach(color => {
+            const input = document.querySelector(`.quantity[data-product="${i}"][data-color="${color}"]`);
+            const quantity = parseInt(input.value) || 0;
+            if (quantity > 0) {
+                const price = prices[i];
+                const itemTotal = quantity * price;
+                subtotal += itemTotal;
+                orderedItems.push({ product: productName, color, quantity, price, total: itemTotal });
+            }
+        });
+    }
+
+    if (orderedItems.length === 0) {
+        alert('هیچ محصولی انتخاب نشده است.');
+        return;
+    }
+
+    // محاسبه تخفیف
+    let discountPercent = 0;
+    if (subtotal >= 40000000) discountPercent = 30;
+    else if (subtotal >= 30000000) discountPercent = 25;
+    else if (subtotal >= 20000000) discountPercent = 20;
+    else if (subtotal >= 15000000) discountPercent = 10;
+    else if (subtotal >= 10000000) discountPercent = 5;
+
+    const discountAmount = subtotal * (discountPercent / 100);
+    const total = subtotal - discountAmount;
+
+    // پر کردن فاکتور
+    document.getElementById('invoice-customer').innerHTML = `
+        <strong>مشتری:</strong> ${name}<br>
+        <strong>موبایل:</strong> ${mobile}<br>
+        <strong>آدرس:</strong> ${address}<br>
+        <strong>تاریخ:</strong> ${new Date().toLocaleDateString('fa-IR')}
+    `;
+
+    const itemsBody = document.getElementById('invoice-items');
+    itemsBody.innerHTML = '';
+    orderedItems.forEach(item => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td style="border: 1px solid #ddd; padding: 6px; font-size: 12px;">${item.product}</td>
+            <td style="border: 1px solid #ddd; padding: 6px; font-size: 12px;">${item.color}</td>
+            <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">${item.quantity}</td>
+            <td style="border: 1px solid #ddd; padding: 6px;">${item.price.toLocaleString('fa-IR')}</td>
+            <td style="border: 1px solid #ddd; padding: 6px;">${item.total.toLocaleString('fa-IR')}</td>
+        `;
+        itemsBody.appendChild(row);
+    });
+
+    document.getElementById('invoice-subtotal').textContent = `جمع کل: ${subtotal.toLocaleString('fa-IR')} تومان`;
+    document.getElementById('invoice-discount').textContent = `تخفیف: ${discountPercent}% (${discountAmount.toLocaleString('fa-IR')} تومان)`;
+    document.getElementById('invoice-total').textContent = `مبلغ قابل پرداخت: ${total.toLocaleString('fa-IR')} تومان`;
+
+    // نمایش فاکتور
+    const preview = document.getElementById('invoice-preview');
+    preview.style.display = 'block';
+
+    // تبدیل به تصویر
+    html2canvas(preview, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff'
+    }).then(canvas => {
+        // ساخت لینک دانلود
+        const link = document.createElement('a');
+        link.download = `فاکتور_سفارش_${mobile}_${new Date().toISOString().slice(0,10)}.jpg`;
+        link.href = canvas.toDataURL('image/jpeg', 0.9);
+        link.click();
+
+        // مخفی کردن دوباره
+        preview.style.display = 'none';
+    }).catch(err => {
+        console.error(err);
+        alert('خطا در ساخت تصویر. لطفاً دوباره امتحان کنید.');
+    });
+});
+    
+    
+    
     </script>
 </body>
 </html>
