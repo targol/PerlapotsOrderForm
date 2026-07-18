@@ -1,740 +1,891 @@
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سیستم سفارش محصول</title>
-    <link href="https://cdn.jsdelivr.net/npm/vazir-font@latest/dist/font-face.css" rel="stylesheet" />
-    <style>
-        body {
-            font-family: 'Vazir', sans-serif;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        th, td {
-            border: 1px solid #ccc;
-            padding: 8px;
-            text-align: center;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
-        h1, h2 {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .form-container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        input[type="text"], textarea, input[type="number"] {
-            width: 100%;
-            padding: 6px;
-            margin: 5px 0;
-            text-align: right;
-            box-sizing: border-box;
-        }
-        input[type="number"] {
-            width: 60px;
-        }
-        button {
-            display: block;
-            margin: 20px auto;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-family: 'Vazir', sans-serif;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .logo {
-            display: block;
-            margin: 20px auto;
-            max-width: 200px;
-            height: auto;
-        }
-        body, table, input, textarea {
-            direction: rtl;
-            text-align: right;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سفارش محصول | PerlaPots</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Arabic:wght@500;600;700&family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<style>
+  :root{
+    --bg: #F7F3EC;
+    --surface: #FFFFFF;
+    --ink: #2B2620;
+    --ink-soft: #6B6155;
+    --primary: #2D4A3E;
+    --primary-dark: #1F352C;
+    --accent: #C9974A;
+    --line: #E6DFD1;
+    --danger: #A6503A;
+    --radius: 14px;
+  }
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    font-family:'Vazirmatn', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    direction: rtl;
+    padding-bottom: 84px; /* room for sticky bar */
+  }
+  h1,h2,h3,.brand-name{
+    font-family:'Noto Serif Arabic', serif;
+  }
+  a{ color: var(--primary); }
+
+  /* ---------- Header ---------- */
+  .site-header{
+    text-align:center;
+    padding: 34px 16px 22px;
+  }
+  .site-header img.logo{
+    max-width: 120px;
+    height:auto;
+    margin-bottom: 10px;
+  }
+  .site-header h1{
+    font-size: 1.7em;
+    margin: 0 0 8px;
+    color: var(--primary-dark);
+  }
+  .site-header p{
+    max-width: 620px;
+    margin: 4px auto;
+    color: var(--ink-soft);
+    font-size: 0.92em;
+    line-height: 1.9;
+  }
+  .site-header .contact-hint{
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* ---------- Color legend ---------- */
+  .legend{
+    max-width: 900px;
+    margin: 10px auto 30px;
+    padding: 0 16px;
+  }
+  .legend h2{
+    text-align:center;
+    font-size: 1em;
+    color: var(--ink-soft);
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .legend-row{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content:center;
+    gap: 20px;
+  }
+  .legend-item{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    width: 64px;
+  }
+  .glaze-dot{
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,0,0,0.12);
+    background:
+      radial-gradient(circle at 32% 26%, rgba(255,255,255,0.65), rgba(255,255,255,0) 46%),
+      var(--dot-color);
+  }
+  .legend-item span{
+    font-size: 0.68em;
+    color: var(--ink-soft);
+    margin-top: 6px;
+    text-align:center;
+    line-height:1.2;
+  }
+
+  /* ---------- Categories / Accordion ---------- */
+  .catalog{
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+  .category{
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .category-header{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background: none;
+    border: none;
+    padding: 16px 20px;
+    font-family:'Noto Serif Arabic', serif;
+    font-size: 1.15em;
+    font-weight: 600;
+    color: var(--primary-dark);
+    cursor:pointer;
+    text-align: right;
+  }
+  .category-header .count{
+    font-family:'Vazirmatn', sans-serif;
+    font-size: 0.6em;
+    font-weight: 500;
+    color: var(--ink-soft);
+    margin-inline-start: 8px;
+  }
+  .category-header .chevron{
+    transition: transform 0.2s ease;
+    font-size: 0.9em;
+    color: var(--accent);
+  }
+  .category.collapsed .chevron{ transform: rotate(180deg); }
+  .category.collapsed .category-body{ display:none; }
+  .category-body{
+    padding: 6px 18px 20px;
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 18px;
+  }
+
+  /* ---------- Product card ---------- */
+  .product-card{
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px;
+    background: #FFFEFC;
+  }
+  .product-photo{
+    width:100%;
+    aspect-ratio: 1/1;
+    border-radius: 10px;
+    overflow:hidden;
+    background: #efe9dc;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .product-photo img{
+    width:100%; height:100%;
+    object-fit: cover;
+    display:block;
+  }
+  .no-photo{
+    font-size: 0.8em;
+    color: #a39a89;
+    padding: 8px;
+    text-align:center;
+  }
+  .product-name{
+    font-weight: 600;
+    font-size: 0.98em;
+    margin: 10px 0 2px;
+    min-height: 2.4em;
+  }
+  .product-price{
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.92em;
+    margin-bottom: 10px;
+  }
+  .swatch-row{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+  .swatch{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    width: 52px;
+  }
+  .swatch button{
+    --swatch-color: #ccc;
+    position: relative;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,0,0,0.15);
+    background:
+      radial-gradient(circle at 32% 26%, rgba(255,255,255,0.6), rgba(255,255,255,0) 46%),
+      var(--swatch-color);
+    cursor: pointer;
+    padding: 0;
+  }
+  .swatch button:focus-visible{
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+  .swatch-badge{
+    position:absolute;
+    top: -6px;
+    left: -6px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 3px;
+    border-radius: 999px;
+    background: var(--primary-dark);
+    color: #fff;
+    font-size: 0.62em;
+    line-height: 18px;
+    text-align:center;
+    display:none;
+  }
+  .swatch.has-qty .swatch-badge{ display:block; }
+  .swatch-reset{
+    position:absolute;
+    bottom: -4px;
+    right: -4px;
+    width: 16px;
+    height:16px;
+    border-radius:50%;
+    background:#fff;
+    border:1px solid var(--line);
+    color: var(--danger);
+    font-size: 0.6em;
+    line-height:14px;
+    text-align:center;
+    display:none;
+    cursor:pointer;
+  }
+  .swatch.has-qty .swatch-reset{ display:block; }
+  .swatch-label{
+    font-size: 0.62em;
+    color: var(--ink-soft);
+    margin-top: 5px;
+    text-align:center;
+    line-height:1.15;
+  }
+  .swatch-qty-input{
+    width: 38px;
+    margin-top: 4px;
+    padding: 3px 2px;
+    text-align:center;
+    font-family:'Vazirmatn', sans-serif;
+    font-size: 0.72em;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: #fffdfa;
+    color: var(--ink);
+  }
+  .swatch-qty-input:focus-visible{
+    outline: 2px solid var(--primary);
+  }
+
+  /* ---------- Sticky summary bar ---------- */
+  .sticky-bar{
+    position: fixed;
+    bottom: 0; left:0; right:0;
+    background: var(--primary-dark);
+    color:#fff;
+    padding: 12px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap: 12px;
+    z-index: 50;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.15);
+  }
+  .sticky-bar .totals{
+    font-size: 0.9em;
+    line-height:1.4;
+  }
+  .sticky-bar .totals b{
+    font-size: 1.05em;
+    color: var(--accent);
+  }
+  .sticky-bar button{
+    background: var(--accent);
+    color: var(--primary-dark);
+    border:none;
+    padding: 10px 20px;
+    border-radius: 999px;
+    font-weight: 700;
+    cursor:pointer;
+    font-family:'Vazirmatn', sans-serif;
+  }
+
+  /* ---------- Checkout section ---------- */
+  .checkout{
+    max-width: 700px;
+    margin: 40px auto 20px;
+    padding: 0 16px;
+  }
+  .card{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 22px;
+    margin-bottom: 18px;
+  }
+  .card h2{
+    margin-top:0;
+    font-size: 1.15em;
+    color: var(--primary-dark);
+  }
+  label{
+    display:block;
+    font-size: 0.85em;
+    color: var(--ink-soft);
+    margin: 12px 0 4px;
+  }
+  input[type="text"], textarea{
+    width:100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    font-family:'Vazirmatn', sans-serif;
+    font-size: 0.95em;
+    background: #fffdfa;
+  }
+  input:focus-visible, textarea:focus-visible{
+    outline: 2px solid var(--primary);
+  }
+  .field-error{
+    color: var(--danger);
+    font-size: 0.78em;
+    margin-top: 4px;
+    display:none;
+  }
+  .field-error.show{ display:block; }
+
+  .review-table{
+    width:100%;
+    border-collapse: collapse;
+    font-size: 0.85em;
+    margin-top: 6px;
+  }
+  .review-table th, .review-table td{
+    border-bottom: 1px solid var(--line);
+    padding: 8px 4px;
+    text-align:center;
+  }
+  .review-empty{
+    color: var(--ink-soft);
+    font-size: 0.88em;
+    text-align:center;
+    padding: 10px 0;
+  }
+  .summary-lines p{
+    margin: 4px 0;
+    font-size: 0.92em;
+  }
+  .summary-lines .grand-total{
+    font-size: 1.1em;
+    font-weight: 700;
+    color: var(--primary-dark);
+  }
+
+  .action-buttons{
+    display:flex;
+    flex-direction:column;
+    gap: 10px;
+  }
+  .btn{
+    display:block;
+    width:100%;
+    padding: 13px;
+    border-radius: 10px;
+    border:none;
+    font-family:'Vazirmatn', sans-serif;
+    font-size: 0.95em;
+    font-weight: 700;
+    cursor:pointer;
+  }
+  .btn-primary{ background: var(--primary); color:#fff; }
+  .btn-primary:hover{ background: var(--primary-dark); }
+  .btn-secondary{ background: #EFE7D6; color: var(--primary-dark); }
+
+  #invoice-preview{
+    display:none;
+    background: #fff;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 600px;
+    border: 1px solid var(--line);
+    font-family: 'Vazirmatn', sans-serif;
+    direction: rtl;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *{ transition:none !important; }
+  }
+
+  @media (max-width: 480px){
+    .site-header h1{ font-size: 1.4em; }
+    .category-header{ padding:14px 14px; font-size:1.02em; }
+    .category-body{ grid-template-columns: 1fr 1fr; gap: 12px; }
+  }
+</style>
 </head>
 <body>
-    <img src="Perlapots_Logo.jpg" alt="لوگوی شرکت" class="logo">
-    <h1>سفارش محصول perlapots</h1>
 
-    <h2>لطفا محصولات مورد نظرتان را بر اساس نوع و رنگ هر محصول انتخاب کنید. در نهایت با ثبت اطلاعاتتان سفارشتان بر روی واتس آپ به شماره ۰۹۱۹۴۷۶۲۲۰۶ ارسال می‌شود</h2>
-    <h2>در صورتی که برای انتخاب محصولات به راهنمایی و کمک ما نیاز دارید، با همین شماره با ما تماس بگیرید یا به ما پیام دهید.</h2>
+  <header class="site-header">
+    <img src="Perlapots_Logo.jpg" alt="لوگوی PerlaPots" class="logo">
+    <h1>سفارش محصول PerlaPots</h1>
+    <p>محصولات مورد نظرتان را انتخاب کنید، رنگ و تعداد را مشخص کنید؛ در پایین صفحه فرم اطلاعاتتان را پر کرده و سفارش را از طریق واتساپ ارسال کنید.</p>
+    <p>برای راهنمایی می‌توانید با شماره <span class="contact-hint">۰۹۱۹۴۷۶۲۲۰۶</span> در واتساپ تماس بگیرید.</p>
+    <p>برای سفارش تکی، کافیست روی رنگ مورد نظر کلیک کنید؛ برای سفارش عمده (گالری‌ها)، عدد دلخواه را در کادر زیر هر رنگ وارد کنید.</p>
+  </header>
 
-   <!-- لینک به صفحه عکس محصولات -->
-    <p style="text-align: center;"><a href="products.html">مشاهده عکس محصولات با رنگ‌های مختلف</a></p>
-        
-    <form id="orderForm" onsubmit="submitOrder(event)">
-        <table id="productTable">
-            <tr>
-                <th>نام محصول</th>
-                <th>قیمت (تومان)</th>
-                <th>Off white</th>
-                <th>Midnight blue</th>
-                <th>Evergreen</th>
-                <th>Misty blue</th>
-                <th>Golden amber</th>
-                <th>Silky beige</th>
-                <th>مجموع (تومان)</th>
-            </tr>
-            <tr>
-                <td>بشقاب غذا خوری قطر ۲۵</td>
-                <td>۷۹۰,۰۰۰</td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="1" data-color="Off white"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="1" data-color="Midnight blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="1" data-color="Evergreen"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="1" data-color="Misty blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="1" data-color="Golden amber"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="1" data-color="Silky beige"></td>
-                <td class="total">۰</td>
-            </tr>
-            <tr>
-                <td>پیش دستی قطر ۱۸</td>
-                <td>۵۱۰,۰۰۰</td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="2" data-color="Off white"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="2" data-color="Midnight blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="2" data-color="Evergreen"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="2" data-color="Misty blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="2" data-color="Golden amber"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="2" data-color="Silky beige"></td>
-                <td class="total">۰</td>
-            </tr>
-            <tr>
-                <td>بشقاب گود قطر ۲۱ مناسب خورشت یا پاستا</td>
-                <td>۶۸۰,۰۰۰</td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="3" data-color="Off white"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="3" data-color="Midnight blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="3" data-color="Evergreen"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="3" data-color="Misty blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="3" data-color="Golden amber"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="3" data-color="Silky beige"></td>
-                <td class="total">۰</td>
-            </tr>
-            <tr>
-                <td>دیس بیضی بزرگ مناسب برنج</td>
-                <td>۱,۲۵۰,۰۰۰</td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="4" data-color="Off white"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="4" data-color="Midnight blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="4" data-color="Evergreen"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="4" data-color="Misty blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="4" data-color="Golden amber"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="4" data-color="Silky beige"></td>
-                <td class="total">۰</td>
-            </tr>
-            <tr>
-                <td>ظرف بیضی طول ۲۹ عرض ۱۶ مناسب پذیرایی</td>
-                <td>۶۸۰,۰۰۰</td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="5" data-color="Off white"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="5" data-color="Midnight blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="5" data-color="Evergreen"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="5" data-color="Misty blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="5" data-color="Golden amber"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="5" data-color="Silky beige"></td>
-                <td class="total">۰</td>
-            </tr>
-            <tr>
-                <td>کاسه سالاد قطر ۲۱ ارتفاع ۶.۵</td>
-                <td>۸۶۰,۰۰۰</td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="6" data-color="Off white"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="6" data-color="Midnight blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="6" data-color="Evergreen"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="6" data-color="Misty blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="6" data-color="Golden amber"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="6" data-color="Silky beige"></td>
-                <td class="total">۰</td>
-            </tr>
-            <tr>
-                <td>کاسه روزانه قطر ۱۶ ارتفاع ۶</td>
-                <td>۵۹۰,۰۰۰</td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="7" data-color="Off white"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="7" data-color="Midnight blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="7" data-color="Evergreen"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="7" data-color="Misty blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="7" data-color="Golden amber"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="7" data-color="Silky beige"></td>
-                <td class="total">۰</td>
-            </tr>
-            <tr>
-                <td>کاسه سوپ قطر ۱۲ ارتفاع ۵.۵</td>
-                <td>۴۱۰,۰۰۰</td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="8" data-color="Off white"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="8" data-color="Midnight blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="8" data-color="Evergreen"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="8" data-color="Misty blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="8" data-color="Golden amber"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="8" data-color="Silky beige"></td>
-                <td class="total">۰</td>
-            </tr>
-            <tr>
-                <td>کاسه ماست قطر ۱۰ ارتفاع ۵</td>
-                <td>۳۹۰,۰۰۰</td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="9" data-color="Off white"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="9" data-color="Midnight blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="9" data-color="Evergreen"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="9" data-color="Misty blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="9" data-color="Golden amber"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="9" data-color="Silky beige"></td>
-                <td class="total">۰</td>
-            </tr>
-            <tr>
-                <td>پیاله کوچک قطر ۸ مناسب زیتون یا ترشی</td>
-                <td>۲۶۰,۰۰۰</td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="10" data-color="Off white"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="10" data-color="Midnight blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="10" data-color="Evergreen"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="10" data-color="Misty blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="10" data-color="Golden amber"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="10" data-color="Silky beige"></td>
-                <td class="total">۰</td>
-            </tr>
-            <tr>
-                <td>کاسه بیضی دفرمه طول ۱۶ عرض ۱۰ ارتفاع ۳</td>
-                <td>۳۶۸,۰۰۰</td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="11" data-color="Off white"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="11" data-color="Midnight blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="11" data-color="Evergreen"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="11" data-color="Misty blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="11" data-color="Golden amber"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="11" data-color="Silky beige"></td>
-                <td class="total">۰</td>
-            </tr>
-            <tr>
-                <td>بشقاب تخت بیضی دفرمه طول ۲۴ عرض ۱۶.۵</td>
-                <td>۵۲۰,۰۰۰</td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="12" data-color="Off white"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="12" data-color="Midnight blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="12" data-color="Evergreen"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="12" data-color="Misty blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="12" data-color="Golden amber"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="12" data-color="Silky beige"></td>
-                <td class="total">۰</td>
-            </tr>
-            <tr>
-                <td>ساید بیضی طول ۱۴.۵ عرض ۷.۵ ارتفاع ۲</td>
-                <td>۲۱۰,۰۰۰</td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="13" data-color="Off white"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="13" data-color="Midnight blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="13" data-color="Evergreen"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="13" data-color="Misty blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="13" data-color="Golden amber"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="13" data-color="Silky beige"></td>
-                <td class="total">۰</td>
-            </tr>
-            <tr>
-                <td>سس خوری کوچک قطر ۶.۵ ارتفاع ۴.۵</td>
-                <td>۲۲۰,۰۰۰</td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="14" data-color="Off white"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="14" data-color="Midnight blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="14" data-color="Evergreen"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="14" data-color="Misty blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="14" data-color="Golden amber"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="14" data-color="Silky beige"></td>
-                <td class="total">۰</td>
-            </tr>
-            <tr>
-                <td>مینی کریمر قطر ۵.۵ ارتفاع ۷</td>
-                <td>۲۳۵,۰۰۰</td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="15" data-color="Off white"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="15" data-color="Midnight blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="15" data-color="Evergreen"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="15" data-color="Misty blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="15" data-color="Golden amber"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="15" data-color="Silky beige"></td>
-                <td class="total">۰</td>
-            </tr>
-            <tr>
-                <td>کاپ لاته به همراه رست ۳۴۰ سی سی</td>
-                <td>۶۹۵,۰۰۰</td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="16" data-color="Off white"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="16" data-color="Midnight blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="16" data-color="Evergreen"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="16" data-color="Misty blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="16" data-color="Golden amber"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="16" data-color="Silky beige"></td>
-                <td class="total">۰</td>
-            </tr>
-            <tr>
-                <td>کاپ کاپوچینو به همراه رست ۲۲۰ سی سی</td>
-                <td>۵۹۰,۰۰۰</td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="17" data-color="Off white"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="17" data-color="Midnight blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="17" data-color="Evergreen"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="17" data-color="Misty blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="17" data-color="Golden amber"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="17" data-color="Silky beige"></td>
-                <td class="total">۰</td>
-            </tr>
-            <tr>
-                <td>کاپ اسپرسو به همراه رست ۱۲۰ سی سی</td>
-                <td>۴۹۵,۰۰۰</td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="18" data-color="Off white"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="18" data-color="Midnight blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="18" data-color="Evergreen"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="18" data-color="Misty blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="18" data-color="Golden amber"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="18" data-color="Silky beige"></td>
-                <td class="total">۰</td>
-            </tr>
-            <tr>
-                <td>ماگ ۲۷۰ سی سی مدل هگزا، قطر ۸.۵ ارتفاع ۸</td>
-                <td>۴۷۰,۰۰۰</td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="19" data-color="Off white"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="19" data-color="Midnight blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="19" data-color="Evergreen"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="19" data-color="Misty blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="19" data-color="Golden amber"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="19" data-color="Silky beige"></td>
-                <td class="total">۰</td>
-            </tr>
-            <tr>
-                <td>ماگ ۱۸۰ سی سی مدل هگزا، قطر ۷.۵ ارتفاع ۶.۵</td>
-                <td>۳۶۰,۰۰۰</td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="20" data-color="Off white"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="20" data-color="Midnight blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="20" data-color="Evergreen"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="20" data-color="Misty blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="20" data-color="Golden amber"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="20" data-color="Silky beige"></td>
-                <td class="total">۰</td>
-            </tr>
-            <tr>
-                <td>شات اسپرسو ۹۰ سی سی مدل هگزا، قطر ۶ ارتفاع ۵.۵</td>
-                <td>۲۶۰,۰۰۰</td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="21" data-color="Off white"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="21" data-color="Midnight blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="21" data-color="Evergreen"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="21" data-color="Misty blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="21" data-color="Golden amber"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="21" data-color="Silky beige"></td>
-                <td class="total">۰</td>
-            </tr>
-                <td>پیاله دیپ، قطر ۵ ارتفاع ۳</td>
-                <td>210000</td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="22" data-color="Off white"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="22" data-color="Midnight blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="22" data-color="Evergreen"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="22" data-color="Misty blue"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="22" data-color="Golden amber"></td>
-                <td><input type="number" min="0" value="0" class="quantity" data-product="22" data-color="Silky beige"></td>
-                <td class="total">۰</td>
-             </tr>
-        </table>
+  <section class="legend">
+    <h2>رنگ‌های موجود برای تمام محصولات</h2>
+    <div class="legend-row" id="legendRow"></div>
+  </section>
 
-        <p id="subtotal" style="font-weight: bold;">جمع کل: ۰ تومان</p>
-        <p id="discount" style="font-weight: bold;">تخفیف: ۰٪ (۰ تومان)</p>
-        <p id="total" style="font-weight: bold;"><strong>مجموع نهایی: ۰ تومان</strong></p>
+  <main class="catalog" id="catalog"></main>
 
-            
-        <h2>محصولات سفارش‌ داده شده</h2>
-        <table id="orderedProducts">
-            <tr>
-                <th>نام محصول</th>
-                <th>رنگ</th>
-                <th>قیمت (تومان)</th>
-                <th>تعداد</th>
-                <th>مجموع (تومان)</th>
-            </tr>
-        </table>
+  <section class="checkout" id="checkout">
+    <div class="card">
+      <h2>سبد سفارش شما</h2>
+      <div id="reviewWrapper"><p class="review-empty">هنوز محصولی انتخاب نکرده‌اید.</p></div>
+      <div class="summary-lines" style="margin-top:14px;">
+        <p id="subtotalLine">جمع کل: ۰ تومان</p>
+        <p id="discountLine">تخفیف: ۰٪ (۰ تومان)</p>
+        <p class="grand-total" id="totalLine">مجموع نهایی: ۰ تومان</p>
+      </div>
+    </div>
 
-        <h2>اطلاعات مشتری</h2>
-        <div class="form-container">
-            <label for="name">نام:</label>
-            <input type="text" id="name" name="name" required>
-            <label for="mobile">شماره موبایل:</label>
-            <input type="text" id="mobile" name="mobile" required placeholder="مثال: 09194762206">
-            <label for="address">آدرس:</label>
-            <textarea id="address" required></textarea>
-        </div>
+    <div class="card">
+      <h2>اطلاعات مشتری</h2>
+      <label for="name">نام و نام خانوادگی</label>
+      <input type="text" id="name">
+      <p class="field-error" id="err-name">لطفاً نام خود را وارد کنید.</p>
 
+      <label for="mobile">شماره موبایل</label>
+      <input type="text" id="mobile" placeholder="مثال: 09194762206">
+      <p class="field-error" id="err-mobile">شماره موبایل باید با 09 شروع شده و دقیقاً ۱۱ رقم باشد.</p>
 
-<!-- بخش قابل تبدیل به عکس -->
-<div id="invoice-preview" style="display: none; background: white; padding: 20px; margin: 20px auto; max-width: 600px; border: 1px solid #ddd; font-family: 'Vazir', sans-serif; direction: rtl;">
-  <div style="text-align: center; margin-bottom: 15px;">
-    <img src="Perlapots_Logo.jpg" alt="لوگو" style="height: 60px;">
-    <h2 style="margin: 10px 0; color: #2c3e50;">فاکتور سفارش PerlaPots</h2>
+      <label for="address">آدرس</label>
+      <textarea id="address" rows="3"></textarea>
+      <p class="field-error" id="err-address">لطفاً آدرس را وارد کنید.</p>
+
+      <p class="field-error" id="err-items">لطفاً حداقل یک محصول را انتخاب کنید.</p>
+    </div>
+
+    <div class="action-buttons">
+      <button type="button" class="btn btn-primary" id="submitOrderBtn">ارسال سفارش در واتساپ</button>
+      <button type="button" class="btn btn-secondary" id="downloadInvoiceBtn">دانلود فاکتور به صورت عکس (JPG)</button>
+    </div>
+  </section>
+
+  <div class="sticky-bar">
+    <div class="totals">
+      <span id="stickyItemCount">۰ قلم انتخاب شده</span><br>
+      جمع کل: <b id="stickyTotal">۰ تومان</b>
+    </div>
+    <button type="button" id="stickyCheckoutBtn">تکمیل سفارش</button>
   </div>
-  <div id="invoice-customer" style="margin-bottom: 15px; font-size: 14px;"></div>
-  <table style="width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 15px;">
-    <thead>
-      <tr style="background: #f8f9fa;">
-        <th style="border: 1px solid #ddd; padding: 8px;">محصول</th>
-        <th style="border: 1px solid #ddd; padding: 8px;">رنگ</th>
-        <th style="border: 1px solid #ddd; padding: 8px;">تعداد</th>
-        <th style="border: 1px solid #ddd; padding: 8px;">قیمت واحد</th>
-        <th style="border: 1px solid #ddd; padding: 8px;">جمع</th>
-      </tr>
-    </thead>
-    <tbody id="invoice-items"></tbody>
-  </table>
-  <div style="text-align: left; font-weight: bold; font-size: 14px;">
-    <div id="invoice-subtotal">جمع کل: ۰ تومان</div>
-    <div id="invoice-discount">تخفیف: ۰٪ (۰ تومان)</div>
-    <div id="invoice-total" style="font-size: 16px; color: #27ae60;">مبلغ قابل پرداخت: ۰ تومان</div>
+
+  <!-- بخش قابل تبدیل به عکس فاکتور -->
+  <div id="invoice-preview">
+    <div style="text-align: center; margin-bottom: 15px;">
+      <img src="Perlapots_Logo.jpg" alt="لوگو" style="height: 60px;">
+      <h2 style="margin: 10px 0; color: #2c3e50;">فاکتور سفارش PerlaPots</h2>
+    </div>
+    <div id="invoice-customer" style="margin-bottom: 15px; font-size: 14px;"></div>
+    <table style="width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 15px;">
+      <thead>
+        <tr style="background: #f8f9fa;">
+          <th style="border: 1px solid #ddd; padding: 8px;">محصول</th>
+          <th style="border: 1px solid #ddd; padding: 8px;">رنگ</th>
+          <th style="border: 1px solid #ddd; padding: 8px;">تعداد</th>
+          <th style="border: 1px solid #ddd; padding: 8px;">قیمت واحد</th>
+          <th style="border: 1px solid #ddd; padding: 8px;">جمع</th>
+        </tr>
+      </thead>
+      <tbody id="invoice-items"></tbody>
+    </table>
+    <div style="text-align: left; font-weight: bold; font-size: 14px;">
+      <div id="invoice-subtotal">جمع کل: ۰ تومان</div>
+      <div id="invoice-discount">تخفیف: ۰٪ (۰ تومان)</div>
+      <div id="invoice-total" style="font-size: 16px; color: #27ae60;">مبلغ قابل پرداخت: ۰ تومان</div>
+    </div>
   </div>
-</div>
 
-<!-- دکمه دانلود فاکتور -->
-<button type="button" id="download-invoice" style="background: #3498db; margin: 10px auto; display: block;">
-  دانلود فاکتور به صورت عکس (JPG)
-</button>
+<script>
+  // -------------------------------------------------------------
+  // داده‌ها: برای اضافه یا ویرایش محصول، فقط این آرایه را ویرایش کنید
+  // -------------------------------------------------------------
+  const categories = [
+    { key: "plates",      label: "بشقاب و دیس" },
+    { key: "bowls",       label: "کاسه و ظروف پذیرایی" },
+    { key: "accessories", label: "ظروف کوچک تکمیلی" },
+    { key: "cups",        label: "فنجان و ماگ" }
+  ];
 
+  const products = [
+    { id: 1,  name: "بشقاب غذا خوری قطر ۲۵",                          price: 790000,  image: "images/plate25.webp",      category: "plates" },
+    { id: 2,  name: "پیش دستی قطر ۱۸",                                price: 510000,  image: "images/hplate18.webp",     category: "plates" },
+    { id: 3,  name: "بشقاب گود قطر ۲۱ مناسب خورشت یا پاستا",          price: 680000,  image: "images/plate21.webp",      category: "plates" },
+    { id: 4,  name: "دیس بیضی بزرگ مناسب برنج",                       price: 1250000, image: "images/bplate.webp",       category: "plates" },
+    { id: 12, name: "بشقاب تخت بیضی دفرمه طول ۲۴ عرض ۱۶.۵",           price: 520000,  image: "images/bplatedeform.webp", category: "plates" },
+    { id: 13, name: "ساید بیضی طول ۱۴.۵ عرض ۷.۵ ارتفاع ۲",            price: 210000,  image: "images/bside14.webp",      category: "plates" },
 
-            
+    { id: 5,  name: "ظرف بیضی طول ۲۹ عرض ۱۶ مناسب پذیرایی",           price: 680000,  image: "images/bbowl.webp",        category: "bowls" },
+    { id: 6,  name: "کاسه سالاد قطر ۲۱ ارتفاع ۶.۵",                   price: 860000,  image: "images/saladbowl.webp",    category: "bowls" },
+    { id: 7,  name: "کاسه روزانه قطر ۱۶ ارتفاع ۶",                    price: 590000,  image: "images/dailybowl.webp",    category: "bowls" },
+    { id: 8,  name: "کاسه سوپ قطر ۱۲ ارتفاع ۵.۵",                     price: 410000,  image: "images/soupbowl.webp",     category: "bowls" },
+    { id: 9,  name: "کاسه ماست قطر ۱۰ ارتفاع ۵",                      price: 390000,  image: "images/dailybowl.webp",    category: "bowls" }, /* موقت - لطفاً عکس درست رو جایگزین کن */
+    { id: 10, name: "پیاله کوچک قطر ۸ مناسب زیتون یا ترشی",           price: 260000,  image: "images/bowl8.webp",        category: "bowls" },
+    { id: 11, name: "کاسه بیضی دفرمه طول ۱۶ عرض ۱۰ ارتفاع ۳",         price: 368000,  image: "images/soupbowl.webp",     category: "bowls" }, /* موقت - لطفاً عکس درست رو جایگزین کن */
+    { id: 22, name: "پیاله دیپ، قطر ۵ ارتفاع ۳",                      price: 210000,  image: "images/deep5.webp",        category: "bowls" },
 
-        <button type="submit">ارسال</button>
-    </form>
+    { id: 14, name: "سس خوری کوچک قطر ۶.۵ ارتفاع ۴.۵",               price: 220000,  image: "images/sous.webp",         category: "accessories" },
+    { id: 15, name: "مینی کریمر قطر ۵.۵ ارتفاع ۷",                    price: 235000,  image: "images/minibowl.webp",     category: "accessories" },
 
-    <script>
-        // Product prices in Toman
-        const prices = {
-            1: 790000,
-            2: 510000,
-            3: 680000,
-            4: 1250000,
-            5: 680000,
-            6: 860000,
-            7: 590000,
-            8: 410000,
-            9: 390000,
-            10: 260000,
-            11: 368000,
-            12: 520000,
-            13: 210000,
-            14: 220000,
-            15: 235000,
-            16: 695000,
-            17: 590000,
-            18: 495000,
-            19: 470000,
-            20: 360000,
-            21: 260000,
-            22: 210000
-        };
+    { id: 16, name: "کاپ لاته به همراه رست ۳۴۰ سی سی",                price: 695000,  image: "images/lattecup.webp",     category: "cups" },
+    { id: 17, name: "کاپ کاپوچینو به همراه رست ۲۲۰ سی سی",            price: 590000,  image: "images/cuppochinocup.webp",category: "cups" },
+    { id: 18, name: "کاپ اسپرسو به همراه رست ۱۲۰ سی سی",              price: 495000,  image: "images/soressocup.webp",   category: "cups" },
+    { id: 19, name: "ماگ ۲۷۰ سی سی مدل هگزا، قطر ۸.۵ ارتفاع ۸",       price: 470000,  image: "images/hexamug270.webp",   category: "cups" },
+    { id: 20, name: "ماگ ۱۸۰ سی سی مدل هگزا، قطر ۷.۵ ارتفاع ۶.۵",     price: 360000,  image: "images/hexamug180.webp",   category: "cups" },
+    { id: 21, name: "شات اسپرسو ۹۰ سی سی مدل هگزا، قطر ۶ ارتفاع ۵.۵", price: 260000,  image: "images/hexamug90.webp",    category: "cups" }
+  ];
 
-        // Colors
-        const colors = ['Off white', 'Midnight blue', 'Evergreen', 'Misty blue', 'Golden amber', 'Silky beige'];
+  const colorPalette = [
+    { name: "Off white",     hex: "#F0EBE1" },
+    { name: "Midnight blue", hex: "#1F2E4A" },
+    { name: "Evergreen",     hex: "#2D4A3E" },
+    { name: "Misty blue",    hex: "#9FB4C7" },
+    { name: "Golden amber",  hex: "#C9974A" },
+    { name: "Silky beige",   hex: "#E2D2B4" }
+  ];
 
-        // Google Apps Script Web App URL (replace with your URL)
-        const scriptUrl = 'https://script.google.com/macros/s/AKfycbzwkxXomRanNPBVngfdeuh4LAh2pX-LEFvZj4pKK16H6ZXGMhmNfbwugzLEzGAMsmlZzQ/exec';
+  const WHATSAPP_NUMBER = "+989194762206";
 
-        // Add event listeners to quantity inputs
-        document.querySelectorAll('.quantity').forEach(input => {
-            input.addEventListener('input', updateOrder);
+  // orderState[productId][colorName] = quantity
+  const orderState = {};
+  products.forEach(p => {
+    orderState[p.id] = {};
+    colorPalette.forEach(c => { orderState[p.id][c.name] = 0; });
+  });
+
+  function formatToman(num){
+    return num.toLocaleString('fa-IR');
+  }
+
+  // ---------------- Render: color legend ----------------
+  const legendRow = document.getElementById('legendRow');
+  colorPalette.forEach(color => {
+    const item = document.createElement('div');
+    item.className = 'legend-item';
+    item.innerHTML = `<div class="glaze-dot" style="--dot-color:${color.hex}"></div><span>${color.name}</span>`;
+    legendRow.appendChild(item);
+  });
+
+  // ---------------- Render: catalog ----------------
+  const catalogEl = document.getElementById('catalog');
+
+  categories.forEach(cat => {
+    const catProducts = products.filter(p => p.category === cat.key);
+    if (catProducts.length === 0) return;
+
+    const section = document.createElement('div');
+    section.className = 'category';
+
+    const header = document.createElement('button');
+    header.type = 'button';
+    header.className = 'category-header';
+    header.innerHTML = `<span>${cat.label} <span class="count">(${catProducts.length} مورد)</span></span><span class="chevron">⌄</span>`;
+    header.addEventListener('click', () => {
+      section.classList.toggle('collapsed');
+    });
+
+    const body = document.createElement('div');
+    body.className = 'category-body';
+
+    catProducts.forEach(product => {
+      const card = document.createElement('div');
+      card.className = 'product-card';
+
+      const photo = document.createElement('div');
+      photo.className = 'product-photo';
+      const img = document.createElement('img');
+      img.src = product.image;
+      img.alt = product.name;
+      img.onerror = function(){
+        photo.innerHTML = '<div class="no-photo">عکس به زودی اضافه می‌شود</div>';
+      };
+      photo.appendChild(img);
+
+      const name = document.createElement('div');
+      name.className = 'product-name';
+      name.textContent = product.name;
+
+      const price = document.createElement('div');
+      price.className = 'product-price';
+      price.textContent = formatToman(product.price) + ' تومان';
+
+      const swatchRow = document.createElement('div');
+      swatchRow.className = 'swatch-row';
+
+      colorPalette.forEach(color => {
+        const wrap = document.createElement('div');
+        wrap.className = 'swatch';
+        wrap.dataset.product = product.id;
+        wrap.dataset.color = color.name;
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.style.setProperty('--swatch-color', color.hex);
+        btn.setAttribute('aria-label', `افزودن ${color.name}`);
+
+        const badge = document.createElement('span');
+        badge.className = 'swatch-badge';
+        badge.textContent = '0';
+
+        const qtyInput = document.createElement('input');
+        qtyInput.type = 'number';
+        qtyInput.min = '0';
+        qtyInput.value = '0';
+        qtyInput.className = 'swatch-qty-input';
+        qtyInput.setAttribute('aria-label', `تعداد ${color.name}`);
+        qtyInput.addEventListener('click', (e) => e.stopPropagation());
+        qtyInput.addEventListener('input', () => {
+          const val = Math.max(0, parseInt(qtyInput.value) || 0);
+          orderState[product.id][color.name] = val;
+          refreshSwatch(wrap, badge, qtyInput, val);
+          updateOrder();
         });
 
-        function updateOrder() {
-            let subtotal = 0;
-            const orderedItems = [];
+        const reset = document.createElement('span');
+        reset.className = 'swatch-reset';
+        reset.textContent = '×';
+        reset.addEventListener('click', (e) => {
+          e.stopPropagation();
+          orderState[product.id][color.name] = 0;
+          refreshSwatch(wrap, badge, qtyInput, 0);
+          updateOrder();
+        });
 
-            // Calculate totals for each product
-            for (let i = 1; i <= 21; i++) {
-                let productTotal = 0;
-                const productName = document.querySelector(`#productTable tr:nth-child(${i + 1}) td:first-child`).textContent;
-                colors.forEach(color => {
-                    const input = document.querySelector(`.quantity[data-product="${i}"][data-color="${color}"]`);
-                    const quantity = parseInt(input.value) || 0;
-                    if (quantity > 0) {
-                        const price = prices[i];
-                        const itemTotal = quantity * price;
-                        productTotal += itemTotal;
-                        orderedItems.push({
-                            product: productName,
-                            color: color,
-                            price: price,
-                            quantity: quantity,
-                            total: itemTotal
-                        });
-                    }
-                });
-                // Update product total in the table
-                const totalCell = document.querySelector(`#productTable tr:nth-child(${i + 1}) .total`);
-                totalCell.textContent = productTotal.toLocaleString('fa-IR');
-                subtotal += productTotal;
-            }
+        btn.appendChild(badge);
+        btn.appendChild(reset);
+        btn.addEventListener('click', () => {
+          orderState[product.id][color.name] += 1;
+          refreshSwatch(wrap, badge, qtyInput, orderState[product.id][color.name]);
+          updateOrder();
+        });
 
-            // Calculate discount
-            let discountPercent = 0;
-            if (subtotal >= 50000000) {
-                discountPercent = 15;
-            } else if (subtotal >= 40000000) {
-                discountPercent = 12;
-            } else if (subtotal >= 30000000) {
-                discountPercent = 10;
-            } else if (subtotal >= 20000000) {
-                discountPercent = 8;
-            } else if (subtotal >= 10000000) {
-                discountPercent = 5;
-            } else discountPercent = 0;
-            
-            const discountAmount = subtotal * (discountPercent / 100);
-            const total = subtotal - discountAmount;
+        const label = document.createElement('div');
+        label.className = 'swatch-label';
+        label.textContent = color.name;
 
-            // Update order summary
-            document.getElementById('subtotal').textContent = `جمع کل: ${subtotal.toLocaleString('fa-IR')} تومان`;
-            document.getElementById('discount').textContent = `تخفیف: ${discountPercent}% (${discountAmount.toLocaleString('fa-IR')} تومان)`;
-            document.getElementById('total').textContent = `مجموع نهایی: ${total.toLocaleString('fa-IR')} تومان`;
+        wrap.appendChild(btn);
+        wrap.appendChild(label);
+        wrap.appendChild(qtyInput);
+        swatchRow.appendChild(wrap);
+      });
 
-            // Update ordered products table
-            const orderedTable = document.getElementById('orderedProducts');
-            // Clear existing rows (except header)
-            while (orderedTable.rows.length > 1) {
-                orderedTable.deleteRow(1);
-            }
-            // Add new rows
-            orderedItems.forEach(item => {
-                const row = orderedTable.insertRow();
-                row.insertCell().textContent = item.product;
-                row.insertCell().textContent = item.color;
-                row.insertCell().textContent = item.price.toLocaleString('fa-IR');
-                row.insertCell().textContent = item.quantity;
-                row.insertCell().textContent = item.total.toLocaleString('fa-IR');
-            });
-        }
+      card.appendChild(photo);
+      card.appendChild(name);
+      card.appendChild(price);
+      card.appendChild(swatchRow);
+      body.appendChild(card);
+    });
 
-        function submitOrder(event) {
-            event.preventDefault();
+    section.appendChild(header);
+    section.appendChild(body);
+    catalogEl.appendChild(section);
+  });
 
-            // Get customer information
-            const name = document.getElementById('name').value;
-            const mobile = document.getElementById('mobile').value;
-            const address = document.getElementById('address').value;
-
-            // Validate mobile number: starts with 09, exactly 11 digits
-            const mobileRegex = /^09[0-9]{9}$/;
-            if (!mobileRegex.test(mobile)) {
-                alert('شماره موبایل باید با 09 شروع شده و دقیقاً 11 رقم باشد. مثال: 09194762206');
-                return false;
-            }
-
-            // Collect order details
-            const orderedItems = [];
-            let subtotal = 0;
-            for (let i = 1; i <= 21; i++) {
-                const productName = document.querySelector(`#productTable tr:nth-child(${i + 1}) td:first-child`).textContent;
-                colors.forEach(color => {
-                    const input = document.querySelector(`.quantity[data-product="${i}"][data-color="${color}"]`);
-                    const quantity = parseInt(input.value) || 0;
-                    if (quantity > 0) {
-                        const price = prices[i];
-                        const itemTotal = quantity * price;
-                        subtotal += itemTotal;
-                        orderedItems.push({
-                            product: productName,
-                            color: color,
-                            quantity: quantity,
-                            price: price,
-                            total: itemTotal
-                        });
-                    }
-                });
-            }
-
-            // Validate at least one product is selected
-            if (orderedItems.length === 0) {
-                alert('لطفاً حداقل یک محصول را انتخاب کنید.');
-                return false;
-            }
-
-            // Calculate discount
-           let discountPercent = 0;
-            if (subtotal >= 50000000) {
-                discountPercent = 15;
-            } else if (subtotal >= 40000000) {
-                discountPercent = 12;
-            } else if (subtotal >= 30000000) {
-                discountPercent = 10;
-            } else if (subtotal >= 20000000) {
-                discountPercent = 8;
-            } else if (subtotal >= 10000000) {
-                discountPercent = 5;
-            } else discountPercent = 0;
-                
-            const discountAmount = subtotal * (discountPercent / 100);
-            const total = subtotal - discountAmount;
-
-
-                
-            // Format WhatsApp message
-            let message = `سفارش جدید:\n\nاطلاعات مشتری:\nنام: ${name}\nشماره موبایل: ${mobile}\nآدرس: ${address}\n\nمحصولات سفارش‌ داده شده:\n`;
-              const productGroups = {};
-              orderedItems.forEach(item => {
-              if (!productGroups[item.product]) {
-                  productGroups[item.product] = [];
-               }
-               productGroups[item.product].push(item);
-              });
-              message += Object.keys(productGroups).map((product, index) => {
-              const items = productGroups[product];
-              const totalQuantity = items.reduce((sum, i) => sum + i.quantity, 0);
-              const colorDetails = items.map(i => `${i.color}: ${i.quantity} `).join('، ');
-              return `${index + 1}- ${product}، تعداد کل: ${totalQuantity} عدد (${colorDetails})\n`;
-            }).join('');
-                
-            //    let message = `سفارش جدید:\n\nاطلاعات مشتری:\nنام: ${name}\nشماره موبایل: ${mobile}\nآدرس: ${address}\n\nمحصولات سفارش‌شده:\n`;
-           // orderedItems.forEach((item, index) => {
-                //message += `${index + 1}- ${item.product} (${item.color}): ${item.quantity} عدد، قیمت واحد: ${item.price.toLocaleString('fa-IR')} تومان، مجموع: ${item.total.toLocaleString('fa-IR')} تومان\n`;
-                //message += `${index + 1}- ${item.product}, تعداد کل: ${orderedItems.filter(i => i.product === item.product).reduce((sum, i) => sum + i.quantity, 0)} عدد, (${item.color}: ${item.quantity} عدد)\n`;
-           // });                
-           message += `\nجمع کل: ${subtotal.toLocaleString('fa-IR')} تومان\n`;
-           message += `تخفیف: ${discountPercent}% (${discountAmount.toLocaleString('fa-IR')} تومان)\n`;
-           message += `مجموع نهایی: ${total.toLocaleString('fa-IR')} تومان`;
-
-          // WhatsApp submission
-          const phoneNumber = '+989194762206';
-          const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-                
-           // Open WhatsApp
-            window.open(whatsappUrl, '_blank');
-        }
-    
-    
-    // دکمه دانلود فاکتور
-document.getElementById('download-invoice').addEventListener('click', function() {
-    const name = document.getElementById('name').value.trim();
-    const mobile = document.getElementById('mobile').value.trim();
-    const address = document.getElementById('address').value.trim();
-
-    if (!name || !mobile || !address) {
-        alert('لطفاً نام، موبایل و آدرس را پر کنید.');
-        return;
+  function refreshSwatch(wrapEl, badgeEl, qtyInputEl, qty){
+    badgeEl.textContent = qty;
+    wrapEl.classList.toggle('has-qty', qty > 0);
+    if (qtyInputEl && String(qtyInputEl.value) !== String(qty)){
+      qtyInputEl.value = qty;
     }
+  }
 
-    // جمع‌آوری سفارشات
-    const orderedItems = [];
+  // ---------------- Discount tiers ----------------
+  function calcDiscount(subtotal){
+    if (subtotal >= 50000000) return 15;
+    if (subtotal >= 40000000) return 12;
+    if (subtotal >= 30000000) return 10;
+    if (subtotal >= 20000000) return 8;
+    if (subtotal >= 10000000) return 5;
+    return 0;
+  }
+
+  function collectOrderedItems(){
+    const items = [];
     let subtotal = 0;
-    for (let i = 1; i <= 21; i++) {
-        const productName = document.querySelector(`#productTable tr:nth-child(${i + 1}) td:first-child`).textContent;
-        colors.forEach(color => {
-            const input = document.querySelector(`.quantity[data-product="${i}"][data-color="${color}"]`);
-            const quantity = parseInt(input.value) || 0;
-            if (quantity > 0) {
-                const price = prices[i];
-                const itemTotal = quantity * price;
-                subtotal += itemTotal;
-                orderedItems.push({ product: productName, color, quantity, price, total: itemTotal });
-            }
-        });
-    }
+    products.forEach(product => {
+      colorPalette.forEach(color => {
+        const qty = orderState[product.id][color.name];
+        if (qty > 0){
+          const total = qty * product.price;
+          subtotal += total;
+          items.push({ product: product.name, color: color.name, quantity: qty, price: product.price, total });
+        }
+      });
+    });
+    return { items, subtotal };
+  }
 
-    if (orderedItems.length === 0) {
-        alert('هیچ محصولی انتخاب نشده است.');
-        return;
-    }
+  // ---------------- Live summary / review ----------------
+  const reviewWrapper = document.getElementById('reviewWrapper');
+  const subtotalLine = document.getElementById('subtotalLine');
+  const discountLine = document.getElementById('discountLine');
+  const totalLine = document.getElementById('totalLine');
+  const stickyTotal = document.getElementById('stickyTotal');
+  const stickyItemCount = document.getElementById('stickyItemCount');
 
-    // محاسبه تخفیف
-    let discountPercent = 0;
-    if (subtotal >= 40000000) discountPercent = 30;
-    else if (subtotal >= 30000000) discountPercent = 25;
-    else if (subtotal >= 20000000) discountPercent = 20;
-    else if (subtotal >= 15000000) discountPercent = 10;
-    else if (subtotal >= 10000000) discountPercent = 5;
-
+  function updateOrder(){
+    const { items, subtotal } = collectOrderedItems();
+    const discountPercent = calcDiscount(subtotal);
     const discountAmount = subtotal * (discountPercent / 100);
     const total = subtotal - discountAmount;
 
-    // پر کردن فاکتور
+    if (items.length === 0){
+      reviewWrapper.innerHTML = '<p class="review-empty">هنوز محصولی انتخاب نکرده‌اید.</p>';
+    } else {
+      let rows = items.map(i => `
+        <tr>
+          <td>${i.product}</td>
+          <td>${i.color}</td>
+          <td>${i.quantity}</td>
+          <td>${formatToman(i.total)}</td>
+        </tr>`).join('');
+      reviewWrapper.innerHTML = `
+        <table class="review-table">
+          <tr><th>محصول</th><th>رنگ</th><th>تعداد</th><th>جمع (تومان)</th></tr>
+          ${rows}
+        </table>`;
+    }
+
+    subtotalLine.textContent = `جمع کل: ${formatToman(subtotal)} تومان`;
+    discountLine.textContent = `تخفیف: ${discountPercent}٪ (${formatToman(discountAmount)} تومان)`;
+    totalLine.textContent = `مجموع نهایی: ${formatToman(total)} تومان`;
+
+    const totalQty = items.reduce((sum, i) => sum + i.quantity, 0);
+    stickyItemCount.textContent = `${totalQty.toLocaleString('fa-IR')} قلم انتخاب شده`;
+    stickyTotal.textContent = `${formatToman(total)} تومان`;
+  }
+
+  document.getElementById('stickyCheckoutBtn').addEventListener('click', () => {
+    document.getElementById('checkout').scrollIntoView({ behavior: 'smooth' });
+  });
+
+  // ---------------- Validation helpers ----------------
+  function showError(id, show){
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('show', show);
+  }
+
+  function validateAndCollect(){
+    const name = document.getElementById('name').value.trim();
+    const mobile = document.getElementById('mobile').value.trim();
+    const address = document.getElementById('address').value.trim();
+    const mobileRegex = /^09[0-9]{9}$/;
+
+    const { items, subtotal } = collectOrderedItems();
+
+    const nameOk = name.length > 0;
+    const mobileOk = mobileRegex.test(mobile);
+    const addressOk = address.length > 0;
+    const itemsOk = items.length > 0;
+
+    showError('err-name', !nameOk);
+    showError('err-mobile', !mobileOk);
+    showError('err-address', !addressOk);
+    showError('err-items', !itemsOk);
+
+    if (!nameOk || !mobileOk || !addressOk || !itemsOk) return null;
+
+    return { name, mobile, address, items, subtotal };
+  }
+
+  // ---------------- Submit via WhatsApp ----------------
+  document.getElementById('submitOrderBtn').addEventListener('click', () => {
+    const data = validateAndCollect();
+    if (!data) return;
+
+    const { name, mobile, address, items, subtotal } = data;
+    const discountPercent = calcDiscount(subtotal);
+    const discountAmount = subtotal * (discountPercent / 100);
+    const total = subtotal - discountAmount;
+
+    const productGroups = {};
+    items.forEach(item => {
+      if (!productGroups[item.product]) productGroups[item.product] = [];
+      productGroups[item.product].push(item);
+    });
+
+    let message = `سفارش جدید:\n\nاطلاعات مشتری:\nنام: ${name}\nشماره موبایل: ${mobile}\nآدرس: ${address}\n\nمحصولات سفارش‌ داده شده:\n`;
+    message += Object.keys(productGroups).map((product, index) => {
+      const group = productGroups[product];
+      const totalQuantity = group.reduce((sum, i) => sum + i.quantity, 0);
+      const colorDetails = group.map(i => `${i.color}: ${i.quantity}`).join('، ');
+      return `${index + 1}- ${product}، تعداد کل: ${totalQuantity} عدد (${colorDetails})\n`;
+    }).join('');
+    message += `\nجمع کل: ${formatToman(subtotal)} تومان\n`;
+    message += `تخفیف: ${discountPercent}% (${formatToman(discountAmount)} تومان)\n`;
+    message += `مجموع نهایی: ${formatToman(total)} تومان`;
+
+    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+  });
+
+  // ---------------- Download invoice image ----------------
+  document.getElementById('downloadInvoiceBtn').addEventListener('click', () => {
+    const data = validateAndCollect();
+    if (!data) return;
+
+    const { name, mobile, address, items, subtotal } = data;
+    const discountPercent = calcDiscount(subtotal);
+    const discountAmount = subtotal * (discountPercent / 100);
+    const total = subtotal - discountAmount;
+
     document.getElementById('invoice-customer').innerHTML = `
-        <strong>مشتری:</strong> ${name}<br>
-        <strong>موبایل:</strong> ${mobile}<br>
-        <strong>آدرس:</strong> ${address}<br>
-        <strong>تاریخ:</strong> ${new Date().toLocaleDateString('fa-IR')}
+      <strong>مشتری:</strong> ${name}<br>
+      <strong>موبایل:</strong> ${mobile}<br>
+      <strong>آدرس:</strong> ${address}<br>
+      <strong>تاریخ:</strong> ${new Date().toLocaleDateString('fa-IR')}
     `;
 
     const itemsBody = document.getElementById('invoice-items');
     itemsBody.innerHTML = '';
-    orderedItems.forEach(item => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td style="border: 1px solid #ddd; padding: 6px; font-size: 12px;">${item.product}</td>
-            <td style="border: 1px solid #ddd; padding: 6px; font-size: 12px;">${item.color}</td>
-            <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">${item.quantity}</td>
-            <td style="border: 1px solid #ddd; padding: 6px;">${item.price.toLocaleString('fa-IR')}</td>
-            <td style="border: 1px solid #ddd; padding: 6px;">${item.total.toLocaleString('fa-IR')}</td>
-        `;
-        itemsBody.appendChild(row);
+    items.forEach(item => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td style="border: 1px solid #ddd; padding: 6px; font-size: 12px;">${item.product}</td>
+        <td style="border: 1px solid #ddd; padding: 6px; font-size: 12px;">${item.color}</td>
+        <td style="border: 1px solid #ddd; padding: 6px; text-align: center;">${item.quantity}</td>
+        <td style="border: 1px solid #ddd; padding: 6px;">${formatToman(item.price)}</td>
+        <td style="border: 1px solid #ddd; padding: 6px;">${formatToman(item.total)}</td>
+      `;
+      itemsBody.appendChild(row);
     });
 
-    document.getElementById('invoice-subtotal').textContent = `جمع کل: ${subtotal.toLocaleString('fa-IR')} تومان`;
-    document.getElementById('invoice-discount').textContent = `تخفیف: ${discountPercent}% (${discountAmount.toLocaleString('fa-IR')} تومان)`;
-    document.getElementById('invoice-total').textContent = `مبلغ قابل پرداخت: ${total.toLocaleString('fa-IR')} تومان`;
+    document.getElementById('invoice-subtotal').textContent = `جمع کل: ${formatToman(subtotal)} تومان`;
+    document.getElementById('invoice-discount').textContent = `تخفیف: ${discountPercent}% (${formatToman(discountAmount)} تومان)`;
+    document.getElementById('invoice-total').textContent = `مبلغ قابل پرداخت: ${formatToman(total)} تومان`;
 
-    // نمایش فاکتور
     const preview = document.getElementById('invoice-preview');
     preview.style.display = 'block';
 
-    // تبدیل به تصویر
-    html2canvas(preview, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: '#ffffff'
-    }).then(canvas => {
-        // ساخت لینک دانلود
-        const link = document.createElement('a');
-        link.download = `فاکتور_سفارش_${mobile}_${new Date().toISOString().slice(0,10)}.jpg`;
-        link.href = canvas.toDataURL('image/jpeg', 0.9);
-        link.click();
-
-        // مخفی کردن دوباره
-        preview.style.display = 'none';
+    html2canvas(preview, { scale: 2, useCORS: true, backgroundColor: '#ffffff' }).then(canvas => {
+      const link = document.createElement('a');
+      link.download = `فاکتور_سفارش_${mobile}_${new Date().toISOString().slice(0,10)}.jpg`;
+      link.href = canvas.toDataURL('image/jpeg', 0.9);
+      link.click();
+      preview.style.display = 'none';
     }).catch(err => {
-        console.error(err);
-        alert('خطا در ساخت تصویر. لطفاً دوباره امتحان کنید.');
+      console.error(err);
+      alert('خطا در ساخت تصویر. لطفاً دوباره امتحان کنید.');
     });
-});
-    
-    
-    
-    </script>
+  });
+
+  // initial paint
+  updateOrder();
+</script>
 </body>
 </html>
