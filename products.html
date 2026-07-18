@@ -70,31 +70,42 @@
             margin: 12px 0 4px;
             min-height: 2.4em;
         }
-        .color-palette {
+        .palette-bar {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             justify-content: center;
-            gap: 8px;
-            margin-top: 8px;
+            align-items: flex-start;
+            gap: 22px;
+            max-width: 900px;
+            margin: 0 auto 30px;
+            overflow-x: auto;
+            padding: 10px 0;
         }
         .color-swatch {
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 46px;
+            width: 70px;
+            flex-shrink: 0;
         }
         .swatch-circle {
-            width: 26px;
-            height: 26px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             border: 1px solid rgba(0,0,0,0.15);
-            box-shadow: inset 0 0 0 2px rgba(255,255,255,0.5);
+            box-shadow: inset 0 0 0 3px rgba(255,255,255,0.5);
         }
         .swatch-label {
-            font-size: 0.62em;
-            margin-top: 4px;
+            font-size: 0.75em;
+            margin-top: 6px;
             color: #555;
-            line-height: 1.1;
+            line-height: 1.2;
+            text-align: center;
+        }
+        .palette-title {
+            text-align: center;
+            font-weight: bold;
+            margin: 0 0 12px;
         }
         .note-box {
             max-width: 700px;
@@ -116,6 +127,9 @@
         برای هر محصول یک عکس نمونه قرار داده شده و رنگ‌های موجود آن به صورت پالت رنگی زیر عکس نمایش داده می‌شود.
         رنگ نهایی محصول ممکن است با توجه به نور و صفحه نمایش کمی متفاوت باشد.
     </div>
+
+    <div class="palette-title">رنگ‌های موجود برای تمام محصولات</div>
+    <div class="palette-bar" id="paletteBar"></div>
 
     <div class="products-grid" id="productsGrid"></div>
 
@@ -157,9 +171,17 @@
             { name: "Silky beige",   hex: "#E2D2B4" }
         ];
 
-        function formatToman(num) {
-            return num.toLocaleString('fa-IR');
-        }
+        // پالت رنگی یک‌بار، بالای صفحه
+        const paletteBar = document.getElementById('paletteBar');
+        colorPalette.forEach(color => {
+            const swatch = document.createElement('div');
+            swatch.className = 'color-swatch';
+            swatch.innerHTML = `
+                <div class="swatch-circle" style="background:${color.hex}" title="${color.name}"></div>
+                <div class="swatch-label">${color.name}</div>
+            `;
+            paletteBar.appendChild(swatch);
+        });
 
         const grid = document.getElementById('productsGrid');
 
@@ -182,26 +204,8 @@
             name.className = 'product-name';
             name.textContent = product.name;
 
-            const price = document.createElement('div');
-            price.className = 'product-price';
-            price.textContent = formatToman(product.price) + ' تومان';
-
-            const palette = document.createElement('div');
-            palette.className = 'color-palette';
-            colorPalette.forEach(color => {
-                const swatch = document.createElement('div');
-                swatch.className = 'color-swatch';
-                swatch.innerHTML = `
-                    <div class="swatch-circle" style="background:${color.hex}" title="${color.name}"></div>
-                    <div class="swatch-label">${color.name}</div>
-                `;
-                palette.appendChild(swatch);
-            });
-
             card.appendChild(photoWrapper);
             card.appendChild(name);
-            card.appendChild(price);
-            card.appendChild(palette);
             grid.appendChild(card);
         });
     </script>
