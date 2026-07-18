@@ -6,106 +6,209 @@
     <title>عکس محصولات PerlaPots</title>
     <link href="https://cdn.jsdelivr.net/npm/vazir-font@latest/dist/font-face.css" rel="stylesheet" />
     <style>
+        * {
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Vazir', sans-serif;
             margin: 20px;
+            background: #fafafa;
+            color: #2c2c2c;
         }
         h1 {
             text-align: center;
         }
-        .product-section {
-            margin-bottom: 40px;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 20px;
+        .back-link {
+            display: block;
+            text-align: center;
+            margin: 10px 0 30px;
+        }
+        .back-link a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .product-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 14px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+        }
+        .product-photo-wrapper {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .product-photo-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .no-photo {
+            font-size: 0.85em;
+            color: #999;
+            padding: 10px;
         }
         .product-name {
-            font-size: 1.5em;
-            text-align: center;
+            font-size: 1.05em;
+            font-weight: bold;
+            margin: 12px 0 4px;
+            min-height: 2.4em;
         }
-        .colors-grid {
+        .product-price {
+            color: #4CAF50;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .color-palette {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
+            gap: 8px;
+            margin-top: 8px;
         }
-        .color-item {
-            margin: 10px;
-            text-align: center;
-            width: 150px;
+        .color-swatch {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 46px;
         }
-        .color-item img {
-            width: 100%;
-            height: auto;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+        .swatch-circle {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 1px solid rgba(0,0,0,0.15);
+            box-shadow: inset 0 0 0 2px rgba(255,255,255,0.5);
         }
-        .color-label {
-            margin-top: 5px;
-            font-weight: bold;
+        .swatch-label {
+            font-size: 0.62em;
+            margin-top: 4px;
+            color: #555;
+            line-height: 1.1;
         }
-        a {
-            display: block;
-            text-align: center;
-            margin-top: 20px;
+        .note-box {
+            max-width: 700px;
+            margin: 0 auto 30px;
+            background: #fff8e1;
+            border: 1px solid #ffe082;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 0.9em;
+            color: #6d5300;
         }
     </style>
 </head>
 <body>
     <h1>عکس محصولات PerlaPots با رنگ‌های مختلف</h1>
-    <p style="text-align: center;"><a href="index.html">بازگشت به فرم سفارش</a></p>
+    <p class="back-link"><a href="index.html">بازگشت به فرم سفارش</a></p>
 
-    <div class="product-section">
-        <div class="product-name">بشقاب غذا خوری قطر ۲۵</div>
-        <div class="colors-grid">
-            <div class="color-item">
-                <img src="images/1.jpg" alt="Off white">
-                <div class="color-label">Off white</div>
-            </div>
-            <div class="color-item">
-                <img src="images/2.jpg" alt="Midnight blue">
-                <div class="color-label">Midnight blue</div>
-            </div>
-            <div class="color-item">
-                <img src="images/1.jpg" alt="Evergreen">
-                <div class="color-label">Evergreen</div>
-            </div>
-            <div class="color-item">
-                <img src="images/2.jpg" alt="Misty blue">
-                <div class="color-label">Misty blue</div>
-            </div>
-            <div class="color-item">
-                <img src="images/2.jpg" alt="Golden amber">
-                <div class="color-label">Golden amber</div>
-            </div>
-            <div class="color-item">
-                <img src="images/1.jpg" alt="Silky beige">
-                <div class="color-label">Silky beige</div>
-            </div>
-        </div>
+    <div class="note-box">
+        برای هر محصول یک عکس نمونه قرار داده شده و رنگ‌های موجود آن به صورت پالت رنگی زیر عکس نمایش داده می‌شود.
+        رنگ نهایی محصول ممکن است با توجه به نور و صفحه نمایش کمی متفاوت باشد.
     </div>
 
-    <div class="product-section">
-        <div class="product-name">پیش دستی قطر ۱۸</div>
-        <div class="colors-grid">
-            <div class="color-item">
-                <img src="images/1.jpg" alt="Off white">
-                <div class="color-label">Off white</div>
-            </div>
-            <!-- تکرار برای رنگ‌های دیگر مشابه بالا -->
-        </div>
-    </div>
+    <div class="products-grid" id="productsGrid"></div>
 
-    
-    <!-- مثال برای محصول آخر -->
-    <div class="product-section">
-        <div class="product-name">شات اسپرسو ۹۰ سی سی مدل هگزا، قطر ۶ ارتفاع ۵.۵</div>
-        <div class="colors-grid">
-            <div class="color-item">
-                <img src="images/1.jpg" alt="Off white">
-                <div class="color-label">Off white</div>
-            </div>
-            <!-- رنگ‌های دیگر -->
-        </div>
-    </div>
+    <script>
+        // برای اضافه یا ویرایش محصول، فقط کافیست یک آیتم به این آرایه اضافه/ویرایش کنید
+        // image: مسیر عکس محصول (یک عکس برای هر محصول)
+        const products = [
+            { id: 1,  name: "بشقاب غذا خوری قطر ۲۵",                          price: 790000,  image: "بشقاب ۲۵سانت.webp" },
+            { id: 2,  name: "پیش دستی قطر ۱۸",                                 price: 510000,  image: "پیش دستی ۱۸.webp" },
+            { id: 3,  name: "بشقاب گود قطر ۲۱ مناسب خورشت یا پاستا",           price: 680000,  image: "بشقاب ۲۱.webp" },
+            { id: 4,  name: "دیس بیضی بزرگ مناسب برنج",                       price: 1250000, image: "دیس بزرگ.webp" },
+            { id: 5,  name: "ظرف بیضی طول ۲۹ عرض ۱۶ مناسب پذیرایی",           price: 680000,  image: "کاسه بیضی.webp" },
+            { id: 6,  name: "کاسه سالاد قطر ۲۱ ارتفاع ۶.۵",                    price: 860000,  image: "کاسه سالاد.webp" },
+            { id: 7,  name: "کاسه روزانه قطر ۱۶ ارتفاع ۶",                     price: 590000,  image: "کاسه روزانه.webp" },
+            { id: 8,  name: "کاسه سوپ قطر ۱۲ ارتفاع ۵.۵",                      price: 410000,  image: "کاسه سوپ.webp" },
+            { id: 9,  name: "کاسه ماست قطر ۱۰ ارتفاع ۵",                       price: 390000,  image: "images/9.webp" },
+            { id: 10, name: "پیاله کوچک قطر ۸ مناسب زیتون یا ترشی",           price: 260000,  image: "پیاله قطر ۸.webp" },
+            { id: 11, name: "کاسه بیضی دفرمه طول ۱۶ عرض ۱۰ ارتفاع ۳",         price: 368000,  image: "ساید بیضی.webp" },
+            { id: 12, name: "بشقاب تخت بیضی دفرمه طول ۲۴ عرض ۱۶.۵",           price: 520000,  image: "بشقاب بیضی دفرمه.webp" },
+            { id: 13, name: "ساید بیضی طول ۱۴.۵ عرض ۷.۵ ارتفاع ۲",            price: 210000,  image: "ساید بیضی.webp" },
+            { id: 14, name: "سس خوری کوچک قطر ۶.۵ ارتفاع ۴.۵",                price: 220000,  image: "سس خوری.webp" },
+            { id: 15, name: "مینی کریمر قطر ۵.۵ ارتفاع ۷",                    price: 235000,  image: "کاسه مینی.webp" },
+            { id: 16, name: "کاپ لاته به همراه رست ۳۴۰ سی سی",                price: 695000,  image: "کاپ لته با رست.webp" },
+            { id: 17, name: "کاپ کاپوچینو به همراه رست ۲۲۰ سی سی",           price: 590000,  image: "کاپ کاپوچبنو.webp" },
+            { id: 18, name: "کاپ اسپرسو به همراه رست ۱۲۰ سی سی",             price: 495000,  image: "کاپ اسپرسو با رست.webp" },
+            { id: 19, name: "ماگ ۲۷۰ سی سی مدل هگزا، قطر ۸.۵ ارتفاع ۸",       price: 470000,  image: "ماگ هگزا 270.webp" },
+            { id: 20, name: "ماگ ۱۸۰ سی سی مدل هگزا، قطر ۷.۵ ارتفاع ۶.۵",     price: 360000,  image: "ماگ هگزا 180.webp" },
+            { id: 21, name: "شات اسپرسو ۹۰ سی سی مدل هگزا، قطر ۶ ارتفاع ۵.۵", price: 260000,  image: "ماگ هگزا 90.webp" },
+            { id: 22, name: "پیاله دیپ، قطر ۵ ارتفاع ۳",                      price: 210000,  image: "دیپ قطر ۵.webp" }
+        ];
 
+        // پالت رنگ‌های موجود برای همه محصولات (نام باید با فرم سفارش یکی باشد)
+        const colorPalette = [
+            { name: "Off white",     hex: "#F0EBE1" },
+            { name: "Midnight blue", hex: "#1F2E4A" },
+            { name: "Evergreen",     hex: "#2D4A3E" },
+            { name: "Misty blue",    hex: "#9FB4C7" },
+            { name: "Golden amber",  hex: "#C9974A" },
+            { name: "Silky beige",   hex: "#E2D2B4" }
+        ];
+
+        function formatToman(num) {
+            return num.toLocaleString('fa-IR');
+        }
+
+        const grid = document.getElementById('productsGrid');
+
+        products.forEach(product => {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+
+            const photoWrapper = document.createElement('div');
+            photoWrapper.className = 'product-photo-wrapper';
+
+            const img = document.createElement('img');
+            img.src = product.image;
+            img.alt = product.name;
+            img.onerror = function () {
+                photoWrapper.innerHTML = '<div class="no-photo">عکس به زودی اضافه می‌شود</div>';
+            };
+            photoWrapper.appendChild(img);
+
+            const name = document.createElement('div');
+            name.className = 'product-name';
+            name.textContent = product.name;
+
+            const price = document.createElement('div');
+            price.className = 'product-price';
+            price.textContent = formatToman(product.price) + ' تومان';
+
+            const palette = document.createElement('div');
+            palette.className = 'color-palette';
+            colorPalette.forEach(color => {
+                const swatch = document.createElement('div');
+                swatch.className = 'color-swatch';
+                swatch.innerHTML = `
+                    <div class="swatch-circle" style="background:${color.hex}" title="${color.name}"></div>
+                    <div class="swatch-label">${color.name}</div>
+                `;
+                palette.appendChild(swatch);
+            });
+
+            card.appendChild(photoWrapper);
+            card.appendChild(name);
+            card.appendChild(price);
+            card.appendChild(palette);
+            grid.appendChild(card);
+        });
+    </script>
 </body>
 </html>
