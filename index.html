@@ -197,31 +197,28 @@
   .swatch-row{
     display:flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 12px;
     justify-content: center;
   }
   .swatch{
     display:flex;
     flex-direction:column;
     align-items:center;
-    width: 52px;
+    width: 68px;
   }
-  .swatch button{
+  .swatch-circle{
     --swatch-color: #ccc;
     position: relative;
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
-    border: 1px solid rgba(0,0,0,0.15);
+    border: 2px solid rgba(0,0,0,0.15);
     background:
       radial-gradient(circle at 32% 26%, rgba(255,255,255,0.6), rgba(255,255,255,0) 46%),
       var(--swatch-color);
-    cursor: pointer;
-    padding: 0;
   }
-  .swatch button:focus-visible{
-    outline: 2px solid var(--primary);
-    outline-offset: 2px;
+  .swatch.has-qty .swatch-circle{
+    border-color: var(--primary);
   }
   .swatch-badge{
     position:absolute;
@@ -239,37 +236,46 @@
     display:none;
   }
   .swatch.has-qty .swatch-badge{ display:block; }
-  .swatch-reset{
-    position:absolute;
-    bottom: -4px;
-    right: -4px;
-    width: 16px;
-    height:16px;
-    border-radius:50%;
-    background:#fff;
-    border:1px solid var(--line);
-    color: var(--danger);
-    font-size: 0.6em;
-    line-height:14px;
-    text-align:center;
-    display:none;
-    cursor:pointer;
-  }
-  .swatch.has-qty .swatch-reset{ display:block; }
   .swatch-label{
-    font-size: 0.62em;
+    font-size: 0.64em;
     color: var(--ink-soft);
     margin-top: 5px;
     text-align:center;
     line-height:1.15;
+    min-height: 2.2em;
   }
+  .stepper{
+    display:flex;
+    align-items:center;
+    gap: 3px;
+    margin-top: 6px;
+  }
+  .step-btn{
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
+    border-radius: 7px;
+    border: 1px solid var(--line);
+    background: #EFE7D6;
+    color: var(--primary-dark);
+    font-size: 1em;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:0;
+    touch-action: manipulation;
+  }
+  .step-btn:active{ background: var(--accent); color:#fff; }
+  .step-btn:focus-visible{ outline: 2px solid var(--primary); }
   .swatch-qty-input{
-    width: 38px;
-    margin-top: 4px;
-    padding: 3px 2px;
+    width: 32px;
+    padding: 5px 2px;
     text-align:center;
     font-family:'Vazirmatn', sans-serif;
-    font-size: 0.72em;
+    font-size: 0.78em;
     border: 1px solid var(--line);
     border-radius: 6px;
     background: #fffdfa;
@@ -422,7 +428,7 @@
   @media (max-width: 480px){
     .site-header h1{ font-size: 1.4em; }
     .category-header{ padding:14px 14px; font-size:1.02em; }
-    .category-body{ grid-template-columns: 1fr 1fr; gap: 12px; }
+    .category-body{ grid-template-columns: 1fr; gap: 12px; }
   }
 </style>
 </head>
@@ -433,7 +439,7 @@
     <h1>سفارش محصول PerlaPots</h1>
     <p>محصولات مورد نظرتان را انتخاب کنید، رنگ و تعداد را مشخص کنید؛ در پایین صفحه فرم اطلاعاتتان را پر کرده و سفارش را از طریق واتساپ ارسال کنید.</p>
     <p>برای راهنمایی می‌توانید با شماره <span class="contact-hint">۰۹۱۹۴۷۶۲۲۰۶</span> در واتساپ تماس بگیرید.</p>
-    <p>برای سفارش، کافیست تعداد دلخواه را در کادر زیر هر رنگ و آیتم وارد کنید.</p>
+    <p>برای سفارش تکی، کافیست روی رنگ مورد نظر کلیک کنید؛ برای سفارش عمده (گالری‌ها)، عدد دلخواه را در کادر زیر هر رنگ وارد کنید.</p>
   </header>
 
   <section class="legend">
@@ -527,27 +533,27 @@
     { id: 2,  name: "پیش دستی قطر ۱۸",                                price: 510000,  image: "images/hplate18.webp",     category: "plates" },
     { id: 3,  name: "بشقاب گود قطر ۲۱ مناسب خورشت یا پاستا",          price: 680000,  image: "images/plate21.webp",      category: "plates" },
     { id: 4,  name: "دیس بیضی بزرگ مناسب برنج",                       price: 1250000, image: "images/bplate.webp",       category: "plates" },
-    { id: 5,  name: "دیس بیضی طول ۲۹ عرض ۱۶ مناسب پذیرایی",           price: 680000,  image: "images/mplate.webp",        category: "plates" },
-    { id: 6, name: "بشقاب تخت بیضی دفرمه طول ۲۴ عرض ۱۶.۵",           price: 520000,  image: "images/bplatedeform.webp", category: "plates" },
-    
-    { id: 7,  name: "کاسه سالاد قطر ۲۱ ارتفاع ۶.۵",                   price: 860000,  image: "images/saladbowl.webp",    category: "bowls" },
-    { id: 8,  name: "کاسه روزانه قطر ۱۶ ارتفاع ۶",                    price: 590000,  image: "images/dailybowl.webp",    category: "bowls" },
-    { id: 9,  name: "کاسه سوپ قطر ۱۲ ارتفاع ۵.۵",                     price: 410000,  image: "images/soupbowl.webp",     category: "bowls" },
-    { id: 10,  name: "کاسه مینی قطر ۱۰ ارتفاع ۵",                      price: 390000,  image: "images/minibowl.webp",    category: "bowls" },   
-    { id: 11, name: "پیاله کوچک قطر ۸ مناسب زیتون یا ترشی",           price: 260000,  image: "images/bowl8.webp",        category: "bowls" },
-    { id: 12, name: "کاسه بیضی دفرمه طول ۱۶ عرض ۱۰ ارتفاع ۳",         price: 368000,  image: "images/bbowl.webp",     category: "bowls" }, 
-    { id: 13, name: "پیاله دیپ، قطر ۵ ارتفاع ۳",                      price: 210000,  image: "images/deep5.webp",        category: "bowls" },
+    { id: 12, name: "بشقاب تخت بیضی دفرمه طول ۲۴ عرض ۱۶.۵",           price: 520000,  image: "images/bplatedeform.webp", category: "plates" },
+    { id: 13, name: "ساید بیضی طول ۱۴.۵ عرض ۷.۵ ارتفاع ۲",            price: 210000,  image: "images/bside14.webp",      category: "plates" },
+
+    { id: 5,  name: "ظرف بیضی طول ۲۹ عرض ۱۶ مناسب پذیرایی",           price: 680000,  image: "images/bbowl.webp",        category: "bowls" },
+    { id: 6,  name: "کاسه سالاد قطر ۲۱ ارتفاع ۶.۵",                   price: 860000,  image: "images/saladbowl.webp",    category: "bowls" },
+    { id: 7,  name: "کاسه روزانه قطر ۱۶ ارتفاع ۶",                    price: 590000,  image: "images/dailybowl.webp",    category: "bowls" },
+    { id: 8,  name: "کاسه سوپ قطر ۱۲ ارتفاع ۵.۵",                     price: 410000,  image: "images/soupbowl.webp",     category: "bowls" },
+    { id: 9,  name: "کاسه ماست قطر ۱۰ ارتفاع ۵",                      price: 390000,  image: "images/dailybowl.webp",    category: "bowls" }, /* موقت - لطفاً عکس درست رو جایگزین کن */
+    { id: 10, name: "پیاله کوچک قطر ۸ مناسب زیتون یا ترشی",           price: 260000,  image: "images/bowl8.webp",        category: "bowls" },
+    { id: 11, name: "کاسه بیضی دفرمه طول ۱۶ عرض ۱۰ ارتفاع ۳",         price: 368000,  image: "images/soupbowl.webp",     category: "bowls" }, /* موقت - لطفاً عکس درست رو جایگزین کن */
+    { id: 22, name: "پیاله دیپ، قطر ۵ ارتفاع ۳",                      price: 210000,  image: "images/deep5.webp",        category: "bowls" },
 
     { id: 14, name: "سس خوری کوچک قطر ۶.۵ ارتفاع ۴.۵",               price: 220000,  image: "images/sous.webp",         category: "accessories" },
-    { id: 15, name: "مینی کریمر قطر ۵.۵ ارتفاع ۷",                    price: 235000,  image: "images/minicreamer.webp",     category: "accessories" },
-    { id: 16, name: "ساید بیضی طول ۱۴.۵ عرض ۷.۵ ارتفاع ۲",            price: 210000,  image: "images/bside14.webp",      category: "accessories" },
+    { id: 15, name: "مینی کریمر قطر ۵.۵ ارتفاع ۷",                    price: 235000,  image: "images/minibowl.webp",     category: "accessories" },
 
-    { id: 17, name: "کاپ لاته به همراه رست ۳۴۰ سی سی",                price: 695000,  image: "images/lattecup.webp",     category: "cups" },
-    { id: 18, name: "کاپ کاپوچینو به همراه رست ۲۲۰ سی سی",            price: 590000,  image: "images/cuppochinocup.webp",category: "cups" },
-    { id: 19, name: "کاپ اسپرسو به همراه رست ۱۲۰ سی سی",              price: 495000,  image: "images/soressocup.webp",   category: "cups" },
-    { id: 20, name: "ماگ ۲۷۰ سی سی مدل هگزا، قطر ۸.۵ ارتفاع ۸",       price: 470000,  image: "images/hexamug270.webp",   category: "cups" },
-    { id: 21, name: "ماگ ۱۸۰ سی سی مدل هگزا، قطر ۷.۵ ارتفاع ۶.۵",     price: 360000,  image: "images/mug180.webp",   category: "cups" },
-    { id: 22, name: "شات اسپرسو ۹۰ سی سی مدل هگزا، قطر ۶ ارتفاع ۵.۵", price: 260000,  image: "images/hexamug180.webp",    category: "cups" }
+    { id: 16, name: "کاپ لاته به همراه رست ۳۴۰ سی سی",                price: 695000,  image: "images/lattecup.webp",     category: "cups" },
+    { id: 17, name: "کاپ کاپوچینو به همراه رست ۲۲۰ سی سی",            price: 590000,  image: "images/cuppochinocup.webp",category: "cups" },
+    { id: 18, name: "کاپ اسپرسو به همراه رست ۱۲۰ سی سی",              price: 495000,  image: "images/soressocup.webp",   category: "cups" },
+    { id: 19, name: "ماگ ۲۷۰ سی سی مدل هگزا، قطر ۸.۵ ارتفاع ۸",       price: 470000,  image: "images/hexamug270.webp",   category: "cups" },
+    { id: 20, name: "ماگ ۱۸۰ سی سی مدل هگزا، قطر ۷.۵ ارتفاع ۶.۵",     price: 360000,  image: "images/hexamug180.webp",   category: "cups" },
+    { id: 21, name: "شات اسپرسو ۹۰ سی سی مدل هگزا، قطر ۶ ارتفاع ۵.۵", price: 260000,  image: "images/hexamug90.webp",    category: "cups" }
   ];
 
   const colorPalette = [
@@ -633,22 +639,26 @@
         wrap.dataset.product = product.id;
         wrap.dataset.color = color.name;
 
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.style.setProperty('--swatch-color', color.hex);
-        btn.setAttribute('aria-label', `افزودن ${color.name}`);
+        const circle = document.createElement('div');
+        circle.className = 'swatch-circle';
+        circle.style.setProperty('--swatch-color', color.hex);
 
         const badge = document.createElement('span');
         badge.className = 'swatch-badge';
         badge.textContent = '0';
+        circle.appendChild(badge);
+
+        const label = document.createElement('div');
+        label.className = 'swatch-label';
+        label.textContent = color.name;
 
         const qtyInput = document.createElement('input');
         qtyInput.type = 'number';
         qtyInput.min = '0';
         qtyInput.value = '0';
+        qtyInput.inputMode = 'numeric';
         qtyInput.className = 'swatch-qty-input';
         qtyInput.setAttribute('aria-label', `تعداد ${color.name}`);
-        qtyInput.addEventListener('click', (e) => e.stopPropagation());
         qtyInput.addEventListener('input', () => {
           const val = Math.max(0, parseInt(qtyInput.value) || 0);
           orderState[product.id][color.name] = val;
@@ -656,31 +666,40 @@
           updateOrder();
         });
 
-        const reset = document.createElement('span');
-        reset.className = 'swatch-reset';
-        reset.textContent = '×';
-        reset.addEventListener('click', (e) => {
-          e.stopPropagation();
-          orderState[product.id][color.name] = 0;
-          refreshSwatch(wrap, badge, qtyInput, 0);
+        const minusBtn = document.createElement('button');
+        minusBtn.type = 'button';
+        minusBtn.className = 'step-btn';
+        minusBtn.textContent = '−';
+        minusBtn.setAttribute('aria-label', `کم کردن ${color.name}`);
+        minusBtn.addEventListener('click', () => {
+          const current = orderState[product.id][color.name];
+          const val = Math.max(0, current - 1);
+          orderState[product.id][color.name] = val;
+          refreshSwatch(wrap, badge, qtyInput, val);
           updateOrder();
         });
 
-        btn.appendChild(badge);
-        btn.appendChild(reset);
-        btn.addEventListener('click', () => {
-          orderState[product.id][color.name] += 1;
-          refreshSwatch(wrap, badge, qtyInput, orderState[product.id][color.name]);
+        const plusBtn = document.createElement('button');
+        plusBtn.type = 'button';
+        plusBtn.className = 'step-btn';
+        plusBtn.textContent = '+';
+        plusBtn.setAttribute('aria-label', `اضافه کردن ${color.name}`);
+        plusBtn.addEventListener('click', () => {
+          const val = orderState[product.id][color.name] + 1;
+          orderState[product.id][color.name] = val;
+          refreshSwatch(wrap, badge, qtyInput, val);
           updateOrder();
         });
 
-        const label = document.createElement('div');
-        label.className = 'swatch-label';
-        label.textContent = color.name;
+        const stepper = document.createElement('div');
+        stepper.className = 'stepper';
+        stepper.appendChild(minusBtn);
+        stepper.appendChild(qtyInput);
+        stepper.appendChild(plusBtn);
 
-        wrap.appendChild(btn);
+        wrap.appendChild(circle);
         wrap.appendChild(label);
-        wrap.appendChild(qtyInput);
+        wrap.appendChild(stepper);
         swatchRow.appendChild(wrap);
       });
 
