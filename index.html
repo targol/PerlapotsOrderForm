@@ -573,7 +573,7 @@
   });
 
   function formatToman(num){
-    return num.toLocaleString('fa-IR');
+    return Math.round(num).toLocaleString('fa-IR').replace(/٬/g, ',');
   }
 
   // ---------------- Render: color legend ----------------
