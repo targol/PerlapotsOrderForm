@@ -138,27 +138,33 @@
         // image: مسیر عکس محصول (یک عکس برای هر محصول)
         const products = [
             { id: 1,  name: "بشقاب غذا خوری قطر ۲۵",                          image: "images/plate25.webp" },
-            { id: 2,  name: "پیش دستی قطر ۱۸",                               image: "images/hplate18.webp" },
-            { id: 3,  name: "بشقاب گود قطر ۲۱ مناسب خورشت یا پاستا",              image: "images/plate21.webp" },
-            { id: 4,  name: "دیس بیضی بزرگ مناسب برنج",                       image: "images/bplate.webp" },
-            { id: 5,  name: "ظرف بیضی طول ۲۹ عرض ۱۶ مناسب پذیرایی",           image: "images/bbowl.webp" },
-            { id: 6,  name: "کاسه سالاد قطر ۲۱ ارتفاع ۶.۵",                      image: "images/saladbowl.webp" },
-            { id: 7,  name: "کاسه روزانه قطر ۱۶ ارتفاع ۶",                       image: "images/dailybowl.webp" },
-            { id: 8,  name: "کاسه سوپ قطر ۱۲ ارتفاع ۵.۵",                      image: "images/soupbowl.webp" },
-            { id: 9,  name: "کاسه ماست قطر ۱۰ ارتفاع ۵",                       image: "images/dailybowl.webp" }, /* موقت - لطفاً عکس درست رو جایگزین کن */
-            { id: 10, name: "پیاله کوچک قطر ۸ مناسب زیتون یا ترشی",               image: "images/bowl8.webp" },
-            { id: 11, name: "کاسه بیضی دفرمه طول ۱۶ عرض ۱۰ ارتفاع ۳",           image: "images/soupbowl.webp" }, /* موقت - لطفاً عکس درست رو جایگزین کن */
+            { id: 2,  name: "بشقاب گود قطر ۲۱ مناسب خورشت یا پاستا",              image: "images/hplate18.webp" },
+            { id: 3,  name: "پیش دستی قطر ۱۸",                               image: "images/plate21.webp" },
+            { id: 4,  name: "ظرف دسر قطر ۱۵",                              image: "images/bplate.webp" },
+            { id: 5,  name: "بشقاب تخت بیضی دفرمه طول ۲۴ عرض ۱۶.۵",           image: "images/bbowl.webp" },
+            { id: 6,  name: "دیس بیضی بزرگ طول ۳۵ عرض ۲۲ مناسب برنج",         image: "images/saladbowl.webp" },
+            { id: 7,  name: "دیس بیضی متوسط طول ۲۹ عرض ۱۶ مناسب پذیرایی",       image: "images/dailybowl.webp" },
+            { id: 8,  name: "کاسه سالاد قطر ۲۱ ارتفاع ۶.۵",                      image: "images/soupbowl.webp" },
+            { id: 9,  name: "کاسه روزانه قطر ۱۶ ارتفاع ۶",                       image: "images/dailybowl.webp" }, /* موقت - لطفاً عکس درست رو جایگزین کن */
+            { id: 10, name: "کاسه سوپ قطر ۱۲ ارتفاع ۵.۵",                      image: "images/bowl8.webp" },
+            { id: 11, name: "کاسه مینی مناسب ماست و ترشی قطر ۱۰ ارتفاع ۵",         image: "images/soupbowl.webp" }, /* موقت - لطفاً عکس درست رو جایگزین کن */
             { id: 12, name: "بشقاب تخت بیضی دفرمه طول ۲۴ عرض ۱۶.۵",           image: "images/bplatedeform.webp" },
-            { id: 13, name: "ساید بیضی طول ۱۴.۵ عرض ۷.۵ ارتفاع ۲",            image: "images/bside14.webp" },
+            { id: 13, name: "پیاله کوچک قطر ۸ مناسب زیتون یا ترشی",               image: "images/bside14.webp" },
             { id: 14, name: "سس خوری کوچک قطر ۶.۵ ارتفاع ۴.۵",               image: "images/sous.webp" },
-            { id: 15, name: "مینی کریمر قطر ۵.۵ ارتفاع ۷",                      image: "images/minibowl.webp" },
-            { id: 16, name: "کاپ لاته به همراه رست ۳۴۰ سی سی",                image: "images/lattecup.webp" },
-            { id: 17, name: "کاپ کاپوچینو به همراه رست ۲۲۰ سی سی",             image: "images/cuppochinocup.webp" },
-            { id: 18, name: "کاپ اسپرسو به همراه رست ۱۲۰ سی سی",             image: "images/soressocup.webp" },
-            { id: 19, name: "ماگ ۲۷۰ سی سی مدل هگزا، قطر ۸.۵ ارتفاع ۸",       image: "images/hexamug270.webp" },
-            { id: 20, name: "ماگ ۱۸۰ سی سی مدل هگزا، قطر ۷.۵ ارتفاع ۶.۵",     image: "images/hexamug180.webp" },
-            { id: 21, name: "شات اسپرسو ۹۰ سی سی مدل هگزا، قطر ۶ ارتفاع ۵.۵",  image: "images/hexamug90.webp" },
-            { id: 22, name: "پیاله دیپ، قطر ۵ ارتفاع ۳",                      image: "images/deep5.webp" }
+            { id: 15, name: "پیاله دیپ، قطر ۵ ارتفاع ۳",                         image: "images/minibowl.webp" },
+            { id: 16, name: "مینی کریمر قطر ۵.۵ ارتفاع ۷",                      image: "images/lattecup.webp" },
+            { id: 17, name: "ساید بیضی طول ۱۴.۵ عرض ۷.۵ ارتفاع ۲",            image: "images/cuppochinocup.webp" },
+            { id: 18, name: "کاپ لاته به همراه رست ۳۴۰ سی سی",                 image: "images/soressocup.webp" },
+            { id: 19, name: "کاپ کاپوچینو به همراه رست ۲۲۰ سی سی",              image: "images/hexamug270.webp" },
+            { id: 20, name: "کاپ اسپرسو به همراه رست ۱۲۰ سی سی",              image: "images/hexamug180.webp" },
+            { id: 21, name: "ماگ بزرگ حدود ۴۰۰ سی‌سی",                      image: "images/hexamug90.webp" },
+            { id: 22, name: "ماگ مدل هگزا ۲۷۰ سی سی قطر ۸.۵ ارتفاع ۸",         image: "images/deep5.webp" }
+            { id: 23, name: "ماگ مدل هگزا ۱۸۰ سی سی قطر ۷.۵ ارتفاع ۶.۵",       image: "images/hexamug180.webp" },
+            { id: 24, name: "شات اسپرسو مدل هگزا ۹۰ سی سی قطر ۶ ارتفاع ۵.۵",    image: "images/hexamug90.webp" }
+            { id: 25, name: "بشقاب سری اج قطر ۲۸",                          image: "images/hexamug270.webp" },
+            { id: 26, name: "بشقاب سری اج قطر ۲۴",                          image: "images/hexamug270.webp" },
+            { id: 27, name: "بشقاب سری اج قطر ۲۰",                          image: "images/hexamug270.webp" },
+            { id: 28, name: "کاسه پاستا لبه‌دار سری اج",                         image: "images/hexamug270.webp" },
         ];
 
         // پالت رنگ‌های موجود برای همه محصولات (نام باید با فرم سفارش یکی باشد)
